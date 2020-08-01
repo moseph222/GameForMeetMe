@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:controller="sample.Controller_teams"
+          xmlns:fx="https://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10" style="-fx-background-color:purple" gridLinesVisible="true">
+
+    <Label fx:id="Team1Title" GridPane.rowIndex="1" GridPane.columnIndex="2" style="-fx-text-fill:white"/>
+    <TextArea fx:id="Team1Players" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+    <Label fx:id="Team2Title" GridPane.rowIndex="3" GridPane.columnIndex="2" style="-fx-text-fill:white"/>
+    <TextArea fx:id="Team2Players" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+    <Button text="Submit Teams" GridPane.rowIndex="5" GridPane.columnIndex="2" onAction="#submitTeams" />
+    <Button text="Randomize" GridPane.rowIndex="5" GridPane.columnIndex="4" onAction="#randomizeTeams" />
+</GridPane>

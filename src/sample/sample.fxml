@@ -12,28 +12,28 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.TextField?>
-<GridPane fx:controller="sample.Controller"
-          xmlns:fx="https://javafx.com/fxml" alignment="center" hgap="10" vgap="10" style="-fx-background-color:purple">
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.StackPane?>
+<GridPane fx:controller="sample.Controller_start"
+          xmlns:fx="https://javafx.com/fxml" alignment="center" hgap="10" vgap="10" style="-fx-background-color:purple" gridLinesVisible="false">
 
-        <columnConstraints>
-            <ColumnConstraints percentWidth="50.0"/>
-            <ColumnConstraints percentWidth="50.0"/>
-        </columnConstraints>
-
-    <Label GridPane.rowIndex="0" GridPane.columnIndex="0" >
-        <graphic>
-            <ImageView >
-                <Image url="@LogoFued.png" requestedWidth="300" requestedHeight="200"/>
-            </ImageView>
-        </graphic>
-    </Label>
+    <StackPane>
+        <Label GridPane.rowIndex="0" GridPane.columnIndex="0">
+            <graphic>
+                <ImageView >
+                    <Image url="@LogoFeud.png" requestedWidth="300" requestedHeight="200"/>
+                </ImageView>
+            </graphic>
+        </Label>
+        <Text text="Answer" opacity="100"></Text>
+    </StackPane>
 
     <Label GridPane.rowIndex="1" GridPane.columnIndex="0" text="Team 1:" style="-fx-text-fill:white"/>
     <TextField fx:id="Team1" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
     <Label GridPane.rowIndex="3" GridPane.columnIndex="0" text="Team 2:" style="-fx-text-fill:white"/>
     <TextField fx:id="Team2" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
 
-    <Label fx:id="StartButton" GridPane.rowIndex="6" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked"  >
+    <Label fx:id="StartButton" GridPane.rowIndex="6" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
         <graphic>
             <ImageView>
                 <Image url="@StartButton.png" />
