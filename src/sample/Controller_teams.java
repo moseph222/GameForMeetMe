@@ -7,21 +7,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
-//hello
 
 public class Controller_teams {
 
@@ -44,15 +39,6 @@ public class Controller_teams {
 
     public void initialize() throws FileNotFoundException {
 
-        // File with 151 questions
-        File file = new File("E:\\Documents\\Sample_FF_Questions.txt");
-        Scanner scan = new Scanner(file);
-        scan.useDelimiter("   ");
-        int num = 0;
-        int index = 0;
-        String next = "";
-        String question = "";
-        String answer[] = new String[5];
 
 
         StageTitle.setText("Team Selection");
