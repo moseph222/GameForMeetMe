@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,7 +100,7 @@ public class Controller_teams {
             System.out.println("["+team2playerslist.get(i)+"]");
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("stage2.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gamestage.fxml"));
         Parent root = (Parent)loader.load();
         Controller_gameStage gameStage = loader.getController();
         gameStage.setStageAndSetupListeners(primaryStage);
