@@ -8,13 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 //hello
 
 import java.io.IOException;
 
-public class Controller {
+public class Controller_start {
 
     @FXML
     private TextField Team1;
@@ -39,7 +38,10 @@ public class Controller {
             System.out.println("The following button was a " + e.getSource());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("stage2.fxml"));
             Parent root = (Parent)loader.load();
+            Controller_gameStage controller = (Controller_gameStage) loader.getController();
+            controller.setStageAndSetupListeners(primaryStage);
             primaryStage.setScene(new Scene(root, 720, 640));
+
         }
     }
 
