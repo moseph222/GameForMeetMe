@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -28,27 +30,36 @@ public class Controller_start {
 
     @FXML
     public void onButtonClicked(MouseEvent e) throws IOException {
-        //String team1_name = Team1.getText();
-        //String team2_name = Team2.getText();
-        String team1_name = "Test Team1";
-        String team2_name = "Test Team2";
-        boolean disableButton1 = team1_name.isEmpty() || team1_name.trim().isEmpty();
-        boolean disableButton2 = team2_name.isEmpty() || team2_name.trim().isEmpty();
-        //if(!Team1.getText().isEmpty() && !Team2.getText().isEmpty()){
-            System.out.println("Hello  " + Team1.getText());
-            System.out.println("Hello  " + Team2.getText());
+
+        // boolean disableButton1 = team1_name.isEmpty() || team1_name.trim().isEmpty();
+        // boolean disableButton2 = team2_name.isEmpty() || team2_name.trim().isEmpty();
+
+        if(!Team1.getText().isEmpty() && !Team2.getText().isEmpty()){
             System.out.println("The following button was a " + e.getSource());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("pickteams.fxml"));
-            Parent root = (Parent)loader.load();
-            Controller_teams pickteams = loader.getController();
-            pickteams.setStageAndSetupListeners(primaryStage);
-            pickteams.setTeamNames(team1_name,team2_name); //pass team names to second stage
-            primaryStage.setScene(new Scene(root, 720, 640));
-        //}
+            handleEvent();
+        }
     }
 
     public void setStageAndSetupListeners(Stage primaryStage){
         this.primaryStage = primaryStage;
     }
 
+    public void onKeyPress (KeyEvent keyEvent) throws IOException {
+        System.out.println("Key Pressed");
+        if(keyEvent.getCode() == KeyCode.ENTER && !Team1.getText().isEmpty() && !Team2.getText().isEmpty())
+        {
+            handleEvent();
+        }
+    }
+
+    public void handleEvent() throws IOException {
+        System.out.println("Hello  " + Team1.getText());
+        System.out.println("Hello  " + Team2.getText());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("pickteams.fxml"));
+        Parent root = (Parent)loader.load();
+        Controller_teams pickteams = loader.getController();
+        pickteams.setStageAndSetupListeners(primaryStage);
+        pickteams.setTeamNames(Team1.getText(),Team2.getText()); //pass team names to second stage
+        primaryStage.setScene(new Scene(root, 360, 640));
+    }
 }
