@@ -74,7 +74,7 @@ public class Controller_teams {
     }
 
     @FXML
-    public void submitTeams(ActionEvent e) {
+    public void submitTeams(ActionEvent e) throws IOException {
         System.out.println("\n-Submit Teams<-\n");
 
         team1playerslist.clear();
@@ -89,8 +89,6 @@ public class Controller_teams {
         //Team1Players.setEditable(false);
         //Team2Players.setEditable(false);
 
-        // Move on to next stage?
-
         // Debugging
 
         System.out.println("Team 1 Players");
@@ -103,6 +101,13 @@ public class Controller_teams {
         {
             System.out.println("["+team2playerslist.get(i)+"]");
         }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("stage2.fxml"));
+        Parent root = (Parent)loader.load();
+        Controller_gameStage gameStage = loader.getController();
+        gameStage.setStageAndSetupListeners(primaryStage);
+        gameStage.setTeams(Team1Title.getText(),Team2Title.getText(),team1playerslist,team2playerslist);
+        primaryStage.setScene(new Scene(root, 720, 640));
     }
 
     public void clearTeams(ActionEvent actionEvent) {

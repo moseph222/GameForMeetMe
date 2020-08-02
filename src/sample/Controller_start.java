@@ -10,9 +10,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
-//hello
-
 import java.io.IOException;
 
 public class Controller_start {
@@ -26,6 +23,8 @@ public class Controller_start {
     Stage primaryStage;
 
     public void initialize(){
+        Team1.setMaxWidth(250);
+        Team2.setMaxWidth(250);
     }
 
     @FXML

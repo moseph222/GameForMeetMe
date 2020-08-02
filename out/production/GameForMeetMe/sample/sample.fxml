@@ -12,20 +12,23 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
 <GridPane fx:controller="sample.Controller_start" onKeyPressed="#onKeyPress"
-          xmlns:fx="https://javafx.com/fxml" alignment="center" hgap="10" vgap="10" style="-fx-background-color:purple" gridLinesVisible="false">
+          xmlns:fx="https://javafx.com/fxml" alignment="center" hgap="10" vgap="10" style="-fx-background-color:purple">
 
+
+    <TextField>
+
+    </TextField>
     <StackPane>
-        <Label GridPane.rowIndex="0" GridPane.columnIndex="0">
+        <Label GridPane.rowIndex="0" GridPane.columnIndex="0" >
             <graphic>
-                <ImageView >
+                <ImageView>
                     <Image url="@LogoFeud.png" requestedWidth="300" requestedHeight="200"/>
                 </ImageView>
             </graphic>
         </Label>
-        <Text text="Answer" opacity="0"></Text>
     </StackPane>
 
     <Label GridPane.rowIndex="1" GridPane.columnIndex="0" text="Team 1:" style="-fx-text-fill:white"/>

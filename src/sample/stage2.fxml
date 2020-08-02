@@ -5,10 +5,408 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
-<GridPane fx:controller="sample.Controller_start"
+
+<?import javafx.scene.text.Text?>
+<GridPane fx:controller="sample.Controller_gameStage"
           xmlns:fx="https://javafx.com/fxml" alignment="center" hgap="10" vgap="10" style="-fx-background-color:purple" gridLinesVisible="true">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="50.0"/>
+        <ColumnConstraints percentWidth="50.0"/>
+    </columnConstraints>
+
+    <GridPane alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0" >
+        <GridPane alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0" >
+            <Label fx:id="question" wrapText="true"  textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0" text="Here goes the questions"  style="-fx-font-size:16; -fx-text-fill:white"/>
+        </GridPane>
+        <GridPane alignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="0" >
+            <Label fx:id="gameRound" GridPane.rowIndex="1" GridPane.columnIndex="0" text="Here goes the questions"  style="-fx-font-size:14; -fx-text-fill:white"/>
+        </GridPane>
+    </GridPane>
 
 
 
+    <GridPane alignment="center" GridPane.rowIndex="1" GridPane.columnIndex="0" hgap="10" vgap="10" gridLinesVisible="true">
+
+        <columnConstraints>
+            <ColumnConstraints percentWidth="65.0"/>
+            <ColumnConstraints percentWidth="15.0"/>
+        </columnConstraints>
+
+<!--        ============= Questions ==============-->
+
+        <StackPane fx:id="1" GridPane.rowIndex="1" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked" style="-fx-text-fill:white">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button1" text="button1" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+        <StackPane fx:id="2" GridPane.rowIndex="2" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button2" text="button2" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+        <StackPane fx:id="3" GridPane.rowIndex="3" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button3" text="button3" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+        <StackPane fx:id="4" GridPane.rowIndex="4" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button4" text="button4" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+        <StackPane fx:id="5" GridPane.rowIndex="5" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button5" text="button5" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+        <StackPane fx:id="6" GridPane.rowIndex="6" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button6" text="button6" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+        <StackPane fx:id="7" GridPane.rowIndex="7" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button7" text="button7" opacity="0" style="-fx-font-size:22; -fx-fill: white;" />
+        </StackPane>
+
+        <StackPane fx:id="8" GridPane.rowIndex="8" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@NonAnswerButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="button8" text="button8" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+<!--        ============== Point blocks ===================-->
+
+        <StackPane  GridPane.rowIndex="1" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point1" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+        <StackPane  GridPane.rowIndex="2" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point2" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+        <StackPane  GridPane.rowIndex="3" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point3" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+        <StackPane  GridPane.rowIndex="4" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point4" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+        <StackPane  GridPane.rowIndex="5" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point5" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+        <StackPane  GridPane.rowIndex="6" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point6" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+        <StackPane  GridPane.rowIndex="7" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point7" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+        <StackPane  GridPane.rowIndex="8" GridPane.columnIndex="1" onMouseClicked="#onButtonClicked">
+            <Label >
+                <graphic>
+                    <ImageView>
+                        <Image url="@PointsButton.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Text fx:id="point8" text="00" opacity="0" style="-fx-font-size:22; -fx-fill: white;"/>
+        </StackPane>
+
+
+
+    </GridPane>
+
+
+<!--    ======================== Answers =====================-->
+
+
+<!--    <GridPane alignment="center" GridPane.rowIndex="1" GridPane.columnIndex="1" hgap="10" vgap="10" gridLinesVisible="true">-->
+
+<!--        <columnConstraints>-->
+<!--            <ColumnConstraints percentWidth="65.0"/>-->
+<!--            <ColumnConstraints percentWidth="15.0"/>-->
+<!--        </columnConstraints>-->
+
+<!--        &lt;!&ndash;        ============= Questions ==============&ndash;&gt;-->
+
+<!--        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans1" text="button1" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--        <StackPane  GridPane.rowIndex="2" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans2" text="button2" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--        <StackPane  GridPane.rowIndex="3" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans3" text="button3" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans4" text="button4" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans5" text="button4" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--        <StackPane  GridPane.rowIndex="6" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans6" text="button4" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--        <StackPane  GridPane.rowIndex="7" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans7" text="button4" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--        <StackPane  GridPane.rowIndex="8" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
+<!--            <Label >-->
+<!--                <graphic>-->
+<!--                    <ImageView>-->
+<!--                        <Image url="@NonAnswerButton.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Label>-->
+<!--            <Text fx:id="ans8" text="button4" opacity="100"/>-->
+<!--        </StackPane>-->
+
+<!--    </GridPane>-->
+
+
+<!--    =================== Menu Control ============================-->
+
+    <GridPane alignment="center" GridPane.rowIndex="2" GridPane.columnIndex="0" gridLinesVisible="true">
+        <StackPane GridPane.rowIndex="0" GridPane.columnIndex="2" >
+            <Label>
+                <graphic>
+                    <ImageView>
+                        <Image url="@RoundPoints.png" />
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label fx:id="roundPoints" text="000"  style="-fx-font-size:22; -fx-text-fill: white;"/>
+        </StackPane>
+
+        <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1" alignment="CENTER">
+            <Label  fx:id="team1Name" text="Team 1" style="-fx-font-size:15; -fx-text-fill: white;"/>
+        </GridPane>
+
+
+
+<!--        =================== THREE ATTEMPTS =================================-->
+
+
+
+        <GridPane GridPane.rowIndex="2" GridPane.columnIndex="1" alignment="CENTER" >
+            <Label GridPane.rowIndex="0" GridPane.columnIndex="0" onMouseClicked="#testFunction">
+                <graphic>
+                    <ImageView fx:id="team1Attempt1">
+                        <Image  url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <graphic>
+                    <ImageView fx:id="team1Attempt2">
+                        <Image  url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label GridPane.rowIndex="0" GridPane.columnIndex="2">
+                <graphic>
+                    <ImageView fx:id="team1Attempt3">
+                        <Image   url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+        </GridPane>
+
+
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="1" alignment="CENTER">
+            <Label>
+                <graphic>
+                    <ImageView>
+                        <Image url="@RedTeam.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label  text="000"  style="-fx-font-size:22; -fx-text-fill: white;"/>
+        </StackPane>
+
+
+
+        <GridPane GridPane.rowIndex="1" GridPane.columnIndex="3" alignment="CENTER">
+            <Label  fx:id="team2Name" text="Team 2" style="-fx-font-size:15; -fx-text-fill: white;"/>
+        </GridPane>
+
+        <StackPane GridPane.rowIndex="3" GridPane.columnIndex="3" alignment="CENTER">
+            <Label>
+                <graphic>
+                    <ImageView>
+                        <Image url="@BlueTeam.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label  text="000" style="-fx-font-size:22; -fx-text-fill: white;"/>
+        </StackPane>
+
+    </GridPane>
 </GridPane>
