@@ -11,10 +11,10 @@
 
     <Label fx:id="StageTitle" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" style="-fx-text-fill:white" />
     <Label fx:id="Team1Title" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill:white"/>
-    <TextArea fx:id="Team1Players" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <TextArea fx:id="Team1Players" GridPane.rowIndex="3" GridPane.columnIndex="0" onKeyTyped="#onKeyTyped"/>
     <Label fx:id="Team2Title" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-text-fill:white"/>
-    <TextArea fx:id="Team2Players" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-    <Button text="Submit Teams" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="LEFT" onAction="#submitTeams" />
+    <TextArea fx:id="Team2Players" GridPane.rowIndex="5" GridPane.columnIndex="0" onKeyTyped="#onKeyTyped"/>
+    <Button fx:id = "submit" text="Submit Teams" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="LEFT" onAction="#submitTeams" />
     <Button text="Clear" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="CENTER" onAction="#clearTeams" />
     <Button text="Randomize" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="RIGHT" onAction="#randomizeTeams" />
 

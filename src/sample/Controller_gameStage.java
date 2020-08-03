@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -91,6 +92,10 @@ public class Controller_gameStage {
     private Label team1Name;
     @FXML
     private Label team2Name;
+    @FXML
+    private Label currentPlayer;
+    @FXML
+    private Label currentTeam;
 
     private int maxNumAnswers;
     private int currentAmountAnswers;
@@ -100,6 +105,10 @@ public class Controller_gameStage {
     private String team2title;
 
     int turn = 0;
+
+    private int gamers = 1;   // players answering are by default team 1
+    private int thieves = 2;  // players set to steal are by default team 2
+    private boolean setToSteal = false;
 
     private LinkedList<Question> Game = new LinkedList<Question>();
 
@@ -178,11 +187,15 @@ public class Controller_gameStage {
         }
 
 
-        // Decide turn
+        // Decide first turn
         turn = getRandomInteger(0,1);
         if(turn == 1){
+            gamers = 1;
+            thieves = 2;
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
         } else if(turn == 2){
+            gamers = 2;
+            thieves = 1;
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
         }
 
@@ -195,7 +208,6 @@ public class Controller_gameStage {
     public static int getRandomInteger(int maximum, int minimum){
         return ((int) (Math.random()*(maximum - minimum))) + minimum;
     }
-
 
     public void onButtonClicked(MouseEvent e) throws IOException {
         StackPane stacknum = (StackPane) e.getSource();
@@ -258,10 +270,106 @@ public class Controller_gameStage {
         this.primaryStage = primaryStage;
     }
 
+    /**
+     * Set team names and player lists.
+     *
+     * @author Benjamin
+     * @param team1title Team 1's name
+     * @param team2title Team 2's name
+     * @param team1playerslist Team 1's list of players
+     * @param team2playerslist Team 2's list of players
+     */
     public void setTeams(String team1title, String team2title, List<String> team1playerslist, List<String> team2playerslist) {
         this.team1title = team1title;
         this.team2title = team2title;
         this.team1playerslist = team1playerslist;
         this.team2playerslist = team2playerslist;
+        team1Name.setText(team1title);
+        team2Name.setText(team2title);;
+
+        setCurrentTeamAndPlayer();
+    }
+
+    /**
+     * Swap team roles.
+     * Gamers will become thieves and
+     * thieves will become gamers.
+     *
+     * Gamers represent the team answering,
+     * thieves represent the team that may be
+     * given a chance to steal.
+     *
+     * @author Benjamin
+     */
+    public void swapTeamRoles(){
+        if(this.gamers == 1){
+            this.gamers = 2;
+            this.thieves = 1;
+        }
+        else if(this.gamers == 2){
+            this.gamers = 1;
+            this.thieves = 2;
+        }
+    }
+
+    /**
+     * Method to return the team digit of whom is currently playing
+     * (either team 1 or team 2)
+     *
+     * @author Benjamin
+     * @return number of current team
+     */
+    public int getCurrentTeamNum() {
+        if(setToSteal)
+            return thieves;
+        else
+            return gamers;
+    }
+
+    /**
+     * Method to return the team name of whom is currently playing
+     *
+     * @author Benjamin
+     * @return name of current team
+     */
+    public String getCurrentTeam() {
+        if(setToSteal) {
+            if(thieves == 1)
+                return team1title;
+            else
+                return team2title;
+        }
+        else {
+            if(gamers == 1)
+                return team1title;
+            else
+                return team2title;
+        }
+    }
+
+    /**
+     * Method to return the name of the current player.
+     * If team 1 is playing, pulls from team 1's player list.
+     * Else, pulls from team 2's.
+     * Before a player name is returned, the respective
+     * player list is rotated by 1.
+     *
+     * @author Benjamin
+     * @return name of current player
+     */
+    public String getCurrentPlayer() {
+        if(getCurrentTeamNum() == 1) {
+            Collections.rotate(team1playerslist,1);
+            return this.team1playerslist.get(0);
+        }
+        else {
+            Collections.rotate(team2playerslist,1);
+            return this.team2playerslist.get(0);
+        }
+    }
+
+    public void setCurrentTeamAndPlayer() {
+        currentPlayer.setText(this.getCurrentPlayer());
+        currentTeam.setText(this.getCurrentTeam());
     }
 }
