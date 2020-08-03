@@ -1,7 +1,10 @@
 package sample;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -118,6 +121,7 @@ public class Controller_gameStage {
     private LinkedList<Text> allButtons = new LinkedList<Text>();
     private LinkedList<Text> points = new LinkedList<Text>();
     private LinkedList<Text> answers = new LinkedList<Text>();
+    private int Gamefile = 0;
 
     int turn = 0;
 
@@ -134,13 +138,22 @@ public class Controller_gameStage {
     // Initializing variables, arrays, and setting labels as empty or lower opacity
 
     public void initialize(){
+
+
+    }
+
+    public void LoadQuestions(){
+
         round = 1;
-        int randomNumber = 1;
+        if(Gamefile == 0){
+            Gamefile = 1;
+        }
         roundPointsInteger = 0;
+        
 
         // Reading questions from a file into a LinkedList of questions
         try {
-            File game = new File("src/sample/Game"+randomNumber+".txt");
+            File game = new File("src/sample/Game"+Gamefile+".txt");
             Scanner myReader = new Scanner(game);
             String input;
             String question = null;
@@ -228,16 +241,10 @@ public class Controller_gameStage {
             thieves = 1;
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
         }
-
-        System.out.println("gamers: " + gamers);
-        System.out.println("thieves: " + thieves);
         //Gets the answers of the first game
         maxNumAnswers = Game.get(0).getAnswers().size();
         System.out.println("Max number of answer" + maxNumAnswers);
         currentAmountAnswers = 0;
-
-
-
     }
 
 
@@ -378,15 +385,6 @@ public class Controller_gameStage {
 
 
 
-
-//        boolean steal = true;
-//        boolean nextMatch = (currentAmountAnswers == maxNumAnswers) || steal;
-
-//        if(nextMatch){
-//            round++;
-//            gameRound.setText("Round " + String.valueOf(round));
-//            // Move to next round
-//        }
     }
 
 
@@ -405,7 +403,6 @@ public class Controller_gameStage {
                 newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
                 team1NumAttempts[0] = 0;
             }
-
             team1Attempt1.setImage(newimg);
             team1Attempt1.setFitHeight(10);
             team1Attempt1.setFitWidth(10);
@@ -505,9 +502,24 @@ public class Controller_gameStage {
         }
     }
 
-    // MAKE ONE MORE BUTTON FOR STEALING FAILED
 
-    public void goToNextQuestion(){
+    public void goToNextQuestion() throws IOException {
+        if(round == Game.size()){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("endScreen.fxml"));
+            Parent root = (Parent)loader.load();
+            Controller_endScreen endgame = (Controller_endScreen)loader.getController();
+            endgame.setStageAndSetupListeners(primaryStage);
+            int t1 = Integer.parseInt(team1Points.getText());
+            int t2 = Integer.parseInt(team2Points.getText());
+            if(t1 > t2){
+                endgame.setWinnerTeam(team1title, team1playerslist);
+            } else {
+                endgame.setWinnerTeam(team2title, team2playerslist);
+            }
+            primaryStage.setScene(new Scene(root, 720, 640));
+            return;
+        }
+
         setToStealAB = false;
         setToStealBA = false;
         System.out.println(Game.size());
@@ -516,9 +528,6 @@ public class Controller_gameStage {
         round++;
         gameRound.setText("Round " + String.valueOf(round));
         swapTeamRoles();
-        System.out.println ("NEW ROUND");
-        System.out.println("gamers: " + gamers);
-        System.out.println("thieves: " + thieves);
         cleanAnswerButtons();
         populateAnsFromCurQuestion(round);
         zeroOpacityAnsFromCurQuestion(round);
@@ -609,8 +618,7 @@ public class Controller_gameStage {
         this.team1playerslist = team1playerslist;
         this.team2playerslist = team2playerslist;
         team1Name.setText(team1title);
-        team2Name.setText(team2title);;
-
+        team2Name.setText(team2title);
         setCurrentTeamAndPlayer();
     }
 
@@ -695,5 +703,10 @@ public class Controller_gameStage {
     public void setCurrentTeamAndPlayer() {
         currentPlayer.setText(this.getCurrentPlayer());
         currentTeam.setText(this.getCurrentTeam());
+    }
+
+    public void chooseGameFile(int gameFile){
+        System.out.println("Inside gameStage: " + gameFile);
+        this.Gamefile = gameFile;
     }
 }
