@@ -5,9 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+<<<<<<< Updated upstream
 import javafx.scene.control.TextField;
+=======
+import javafx.scene.input.KeyEvent;
+>>>>>>> Stashed changes
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -35,14 +40,18 @@ public class Controller_teams {
     private Label Team2Title;
     @FXML
     private TextArea Team2Players;
+    @FXML
+    private Button submit;
 
-    Stage primaryStage;
-    List<String> team1playerslist;
-    List<String> team2playerslist;
-    List<String> totalPlayers;
-    Question[] questions = new Question[151];
+    private Stage primaryStage;
+    private List<String> team1playerslist;
+    private List<String> team2playerslist;
+    private List<String> totalPlayers;
+    private String team1Name;
+    private String team2Name;
 
     public void initialize() throws FileNotFoundException {
+<<<<<<< Updated upstream
 
         // File with 151 questions
         File file = new File("E:\\Documents\\Sample_FF_Questions.txt");
@@ -53,6 +62,9 @@ public class Controller_teams {
         String next = "";
         String question = "";
         String answer[] = new String[5];
+=======
+        System.out.println("Team Stage Initialized");
+>>>>>>> Stashed changes
 
 
         StageTitle.setText("Team Selection");
@@ -71,6 +83,8 @@ public class Controller_teams {
         Team2Players.setMaxHeight(200);
         Team2Players.setMaxWidth(300);
         Team2Players.setWrapText(true);
+
+        submit.setDisable(true);
     }
 
     @FXML
@@ -105,17 +119,27 @@ public class Controller_teams {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("stage2.fxml"));
         Parent root = (Parent)loader.load();
         Controller_gameStage gameStage = loader.getController();
+        gameStage.setTeams(team1Name, team2Name, team1playerslist, team2playerslist);
         gameStage.setStageAndSetupListeners(primaryStage);
-        gameStage.setTeams(Team1Title.getText(),Team2Title.getText(),team1playerslist,team2playerslist);
         primaryStage.setScene(new Scene(root, 720, 640));
     }
 
+    /**
+     * Clears both team's player lists and
+     * resets the text areas of
+     * the team selection stage.
+     * Also clears the total players list.
+     *
+     * @aurthor Benjamin
+     * @param actionEvent UNUSED
+     */
     public void clearTeams(ActionEvent actionEvent) {
         team1playerslist.clear();
         team2playerslist.clear();
         totalPlayers.clear();
         Team1Players.clear();
         Team2Players.clear();
+        this.checkSubmitStatus();
     }
 
     @FXML
@@ -166,6 +190,8 @@ public class Controller_teams {
         {
             System.out.println("["+team2playerslist.get(i)+"]");
         }
+
+        this.checkSubmitStatus();
     }
 
     public void parsePlayers(TextArea players, List<String> list) {
@@ -193,6 +219,9 @@ public class Controller_teams {
     public void setTeamNames(String team1_name, String team2_name) {
         Team1Title.setText("Team "+team1_name+":");
         Team2Title.setText("Team "+team2_name+":");
+        team1Name = team1_name;
+        team2Name = team2_name;
+        System.out.println("setTeamNames called");
     }
 
     public void setStageAndSetupListeners(Stage primaryStage){
@@ -202,5 +231,17 @@ public class Controller_teams {
     @FXML
     public void onButtonClicked(MouseEvent e) throws IOException {
 
+    }
+
+    public void onKeyTyped(KeyEvent keyEvent) {
+        this.checkSubmitStatus();
+    }
+
+    public void checkSubmitStatus()
+    {
+        if(Team1Players.getText().isBlank() || Team2Players.getText().isBlank())
+            submit.setDisable(true);
+        else
+            submit.setDisable(false);
     }
 }
