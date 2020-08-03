@@ -27,9 +27,9 @@
     </GridPane>
 
     <GridPane alignment="center" GridPane.rowIndex="0" GridPane.columnIndex="1" gridLinesVisible="true">
-        <Label fx:id="" text="Playing Team: "  style="-fx-font-size:18; -fx-text-fill: white;" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <Label  text="Playing Team: "  style="-fx-font-size:18; -fx-text-fill: white;" GridPane.rowIndex="0" GridPane.columnIndex="0" />
         <Label fx:id="currentTeam" text="Team 1" style="-fx-font-size:18; -fx-text-fill: white;" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-        <Label fx:id="" text="Current Player: "  style="-fx-font-size:18; -fx-text-fill: white;" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <Label  text="Current Player: "  style="-fx-font-size:18; -fx-text-fill: white;" GridPane.rowIndex="1" GridPane.columnIndex="0" />
         <Label fx:id="currentPlayer" text="Player" style="-fx-font-size:18; -fx-text-fill: white;" GridPane.rowIndex="1" GridPane.columnIndex="1" />
     </GridPane>
 
@@ -253,7 +253,11 @@
                     </ImageView>
                 </graphic>
             </Label>
+<<<<<<< Updated upstream
             <Text fx:id="ans2" text="button2" opacity="100"/>
+=======
+            <Label fx:id="Team1Timer" text="20"  style="-fx-font-size:22; -fx-text-fill: white;"/>
+>>>>>>> Stashed changes
         </StackPane>
 
         <StackPane  GridPane.rowIndex="3" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
@@ -264,7 +268,11 @@
                     </ImageView>
                 </graphic>
             </Label>
+<<<<<<< Updated upstream
             <Text fx:id="ans3" text="button3" opacity="100"/>
+=======
+            <Label fx:id="Team2Timer" text="20"  style="-fx-font-size:22; -fx-text-fill: white;"/>
+>>>>>>> Stashed changes
         </StackPane>
 
         <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">

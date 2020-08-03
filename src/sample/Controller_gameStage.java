@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -97,6 +98,17 @@ public class Controller_gameStage {
     private Label currentPlayer;
     @FXML
     private Label currentTeam;
+<<<<<<< Updated upstream
+=======
+    @FXML
+    private Label team1Points;
+    @FXML
+    private Label team2Points;
+    @FXML
+    public Label Team1Timer;
+    @FXML
+    public Label Team2Timer;
+>>>>>>> Stashed changes
 
     private int maxNumAnswers;
     private int currentAmountAnswers;
@@ -113,14 +125,21 @@ public class Controller_gameStage {
 
     private LinkedList<Question> Game = new LinkedList<Question>();
 
+<<<<<<< Updated upstream
     public void initialize(){
+=======
+
+    // Initializing variables, arrays, and setting labels as empty or lower opacity
+
+    public void initialize() {
+>>>>>>> Stashed changes
         round = 1;
         int randomNumber = 1;
         roundPointsInteger = 0;
 
         // Reading questions from a file into a LinkedList of questions
         try {
-            File game = new File("src/sample/Game"+randomNumber+".txt");
+            File game = new File("src/sample/Game" + randomNumber + ".txt");
             Scanner myReader = new Scanner(game);
             String input;
             String question = null;
@@ -130,26 +149,26 @@ public class Controller_gameStage {
 
             int lineNum = 1;
 
-            while(myReader.hasNext()){
+            while (myReader.hasNext()) {
                 input = myReader.nextLine();
-                if(input.compareTo("NEW QUESTION") != 0){
-                    if(lineNum == 1){
+                if (input.compareTo("NEW QUESTION") != 0) {
+                    if (lineNum == 1) {
                         question = input;
-                    } else if(lineNum % 2 == 0){
+                    } else if (lineNum % 2 == 0) {
                         answers.add(input);
-                    } else if(lineNum % 2 != 0){
+                    } else if (lineNum % 2 != 0) {
                         points.add(Integer.parseInt(input));
                     }
                     lineNum++;
                 } else {
                     lineNum = 1;
-                    Game.add(new Question(question,answers,points,id));
+                    Game.add(new Question(question, answers, points, id));
                     answers = new LinkedList<String>();
                     points = new LinkedList<Integer>();
                     id++;
                 }
             }
-        } catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -175,26 +194,36 @@ public class Controller_gameStage {
         points.add(point7);
         points.add(point8);
 
-        question.setText(Game.get(round-1).getQuestion());
+        question.setText(Game.get(round - 1).getQuestion());
 
-        for(int i = 0; i < allButtons.size();i++){
+        for (int i = 0; i < allButtons.size(); i++) {
             allButtons.get(i).setText("");
             points.get(i).setText("");
         }
 
-        for(int i = 0; i < Game.get(round-1).getAnswers().size();i++){
-            allButtons.get(i).setText(Game.get(round-1).getAnswers().get(i));
-            points.get(i).setText(String.valueOf(Game.get(round-1).getPoints().get(i)));
+        for (int i = 0; i < Game.get(round - 1).getAnswers().size(); i++) {
+            allButtons.get(i).setText(Game.get(round - 1).getAnswers().get(i));
+            points.get(i).setText(String.valueOf(Game.get(round - 1).getPoints().get(i)));
         }
 
 
         // Decide first turn
+<<<<<<< Updated upstream
         turn = getRandomInteger(0,1);
         if(turn == 1){
             gamers = 1;
             thieves = 2;
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
         } else if(turn == 2){
+=======
+        turn = getRandomInteger(0, 1);
+
+        if (turn == 0) {
+            gamers = 1;
+            thieves = 2;
+            team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+        } else if (turn == 1) {
+>>>>>>> Stashed changes
             gamers = 2;
             thieves = 1;
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
@@ -211,6 +240,8 @@ public class Controller_gameStage {
     }
 
     public void onButtonClicked(MouseEvent e) throws IOException {
+        startTimer(20,Team1Timer);
+
         StackPane stacknum = (StackPane) e.getSource();
         int idnum = Integer.parseInt(stacknum.getId());
         if(idnum == 1){
@@ -372,5 +403,35 @@ public class Controller_gameStage {
     public void setCurrentTeamAndPlayer() {
         currentPlayer.setText(this.getCurrentPlayer());
         currentTeam.setText(this.getCurrentTeam());
+    }
+
+    public void startTimer(int seconds, Label clock) {
+        System.out.println("Start");
+        Thread one = new Thread() {
+            private double i = seconds*10;
+            public void run() {
+                try {
+                    while(i+1 > 0)
+                    {
+                        i--;
+                        Platform.runLater(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  //System.out.println("fuck");
+                                                  if(i==0)
+                                                      clock.setText("0");
+                                                  else
+                                                    clock.setText(""+i/10);
+                                              }
+                                          });
+                        Thread.sleep(100);
+                    }
+                } catch(InterruptedException v) {
+                    System.out.println(v);
+                }
+            }
+        };
+
+        one.start();
     }
 }
