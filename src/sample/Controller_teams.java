@@ -43,6 +43,7 @@ public class Controller_teams {
     private List<String> totalPlayers;
     private String team1Name;
     private String team2Name;
+    private int gameFile = 0;
 
     public void initialize() throws FileNotFoundException {
         StageTitle.setText("Team Selection");
@@ -98,6 +99,7 @@ public class Controller_teams {
         Parent root = (Parent)loader.load();
         Controller_gameStage gameStage = loader.getController();
         gameStage.setTeams(team1Name, team2Name, team1playerslist, team2playerslist);
+        gameStage.chooseGameFile(gameFile);
         gameStage.setStageAndSetupListeners(primaryStage);
         primaryStage.setScene(new Scene(root, 720, 640));
     }
@@ -202,8 +204,13 @@ public class Controller_teams {
         System.out.println("setTeamNames called");
     }
 
-    public void setStageAndSetupListeners(Stage primaryStage){
+    public void setStageAndSetupListeners(Stage primaryStage ){
         this.primaryStage = primaryStage;
+    }
+
+    public void chooseGameFile(int gameFile){
+        System.out.println("Inside endScreen: " + gameFile);
+        this.gameFile = gameFile;
     }
 
     @FXML
