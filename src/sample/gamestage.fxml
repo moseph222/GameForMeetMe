@@ -228,107 +228,6 @@
     </GridPane>
 
 
-<!--    ======================== Answers =====================-->
-
-
-<!--    <GridPane alignment="center" GridPane.rowIndex="1" GridPane.columnIndex="1" hgap="10" vgap="10" gridLinesVisible="true">-->
-
-<!--        <columnConstraints>-->
-<!--            <ColumnConstraints percentWidth="65.0"/>-->
-<!--            <ColumnConstraints percentWidth="15.0"/>-->
-<!--        </columnConstraints>-->
-
-<!--        &lt;!&ndash;        ============= Questions ==============&ndash;&gt;-->
-
-<!--        <StackPane GridPane.rowIndex="1" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans1" text="button1" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--        <StackPane  GridPane.rowIndex="2" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans2" text="button2" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--        <StackPane  GridPane.rowIndex="3" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans3" text="button3" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--        <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans4" text="button4" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--        <StackPane GridPane.rowIndex="5" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans5" text="button4" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--        <StackPane  GridPane.rowIndex="6" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans6" text="button4" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--        <StackPane  GridPane.rowIndex="7" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans7" text="button4" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--        <StackPane  GridPane.rowIndex="8" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">-->
-<!--            <Label >-->
-<!--                <graphic>-->
-<!--                    <ImageView>-->
-<!--                        <Image url="@NonAnswerButton.png"/>-->
-<!--                    </ImageView>-->
-<!--                </graphic>-->
-<!--            </Label>-->
-<!--            <Text fx:id="ans8" text="button4" opacity="100"/>-->
-<!--        </StackPane>-->
-
-<!--    </GridPane>-->
 
 
 <!--    =================== Menu Control ============================-->
@@ -351,26 +250,28 @@
 
 
 
+
+
 <!--        =================== THREE ATTEMPTS =================================-->
 
 
 
         <GridPane GridPane.rowIndex="2" GridPane.columnIndex="1" alignment="CENTER" >
-            <Label GridPane.rowIndex="0" GridPane.columnIndex="0" onMouseClicked="#testFunction">
+            <Label  fx:id="team1attemptButton1" GridPane.rowIndex="0" GridPane.columnIndex="0" onMouseClicked="#testFunction">
                 <graphic>
                     <ImageView fx:id="team1Attempt1">
                         <Image  url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
                     </ImageView>
                 </graphic>
             </Label>
-            <Label GridPane.rowIndex="0" GridPane.columnIndex="1">
+            <Label fx:id="team1attemptButton2"  GridPane.rowIndex="0" GridPane.columnIndex="1" onMouseClicked="#testFunction">
                 <graphic>
                     <ImageView fx:id="team1Attempt2">
                         <Image  url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
                     </ImageView>
                 </graphic>
             </Label>
-            <Label GridPane.rowIndex="0" GridPane.columnIndex="2">
+            <Label fx:id="team1attemptButton3" GridPane.rowIndex="0" GridPane.columnIndex="2" onMouseClicked="#testFunction">
                 <graphic>
                     <ImageView fx:id="team1Attempt3">
                         <Image   url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
@@ -378,6 +279,8 @@
                 </graphic>
             </Label>
         </GridPane>
+
+
 
 
         <StackPane GridPane.rowIndex="3" GridPane.columnIndex="1" alignment="CENTER">
@@ -390,6 +293,33 @@
             </Label>
             <Label  text="000"  style="-fx-font-size:22; -fx-text-fill: white;"/>
         </StackPane>
+
+
+
+
+        <GridPane GridPane.rowIndex="2" GridPane.columnIndex="3" alignment="CENTER" >
+            <Label fx:id="team2attemptButton1" GridPane.rowIndex="0" GridPane.columnIndex="0" onMouseClicked="#testFunction">
+                <graphic>
+                    <ImageView fx:id="team2Attempt1">
+                        <Image  url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label fx:id="team2attemptButton2" GridPane.rowIndex="0" GridPane.columnIndex="1" onMouseClicked="#testFunction">
+                <graphic>
+                    <ImageView fx:id="team2Attempt2">
+                        <Image  url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label fx:id="team2attemptButton3" GridPane.rowIndex="0" GridPane.columnIndex="2" onMouseClicked="#testFunction">
+                <graphic>
+                    <ImageView fx:id="team2Attempt3">
+                        <Image   url="@GreenButton.png" requestedWidth="10" requestedHeight="10"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+        </GridPane>
 
 
 
@@ -409,4 +339,124 @@
         </StackPane>
 
     </GridPane>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    ====================== RIGHT PANE ===============================-->
+
+
+
+    <!--    ======================== Answers =====================-->
+
+
+        <GridPane alignment="center" GridPane.rowIndex="1" GridPane.columnIndex="1" hgap="10" vgap="10" gridLinesVisible="true">
+
+            <columnConstraints>
+                <ColumnConstraints percentWidth="65.0"/>
+                <ColumnConstraints percentWidth="15.0"/>
+            </columnConstraints>
+
+            <!--        ============= Questions ==============-->
+
+            <StackPane GridPane.rowIndex="1" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans1" text="button1" opacity="100"/>
+            </StackPane>
+
+            <StackPane  GridPane.rowIndex="2" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans2" text="button2" opacity="100"/>
+            </StackPane>
+
+            <StackPane  GridPane.rowIndex="3" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans3" text="button3" opacity="100"/>
+            </StackPane>
+
+            <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans4" text="button4" opacity="100"/>
+            </StackPane>
+
+            <StackPane GridPane.rowIndex="5" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans5" text="button4" opacity="100"/>
+            </StackPane>
+
+            <StackPane  GridPane.rowIndex="6" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans6" text="button4" opacity="100"/>
+            </StackPane>
+
+            <StackPane  GridPane.rowIndex="7" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans7" text="button4" opacity="100"/>
+            </StackPane>
+
+            <StackPane  GridPane.rowIndex="8" GridPane.columnIndex="0" onMouseClicked="#onButtonClicked">
+                <Label >
+                    <graphic>
+                        <ImageView>
+                            <Image url="@NonAnswerButton.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Text fx:id="ans8" text="button4" opacity="100"/>
+            </StackPane>
+
+        </GridPane>
+
+
+
 </GridPane>

@@ -83,6 +83,12 @@ public class Controller_gameStage {
     private ImageView team1Attempt2;
     @FXML
     private ImageView team1Attempt3;
+    @FXML
+    private ImageView team2Attempt1;
+    @FXML
+    private ImageView team2Attempt2;
+    @FXML
+    private ImageView team2Attempt3;
     private int round = 0;
     @FXML
     private Label roundPoints;
@@ -98,6 +104,8 @@ public class Controller_gameStage {
     private List<String> team2playerslist;
     private String team1title;
     private String team2title;
+    private int[] team1NumAttempts = new int[3];
+    private int[] team2NumAttempts = new int[3];
 
     int turn = 0;
 
@@ -236,22 +244,97 @@ public class Controller_gameStage {
 
         roundPoints.setText(String.valueOf(roundPointsInteger));
 
-        boolean steal = true;
-        boolean nextMatch = (currentAmountAnswers == maxNumAnswers) || steal;
+//        boolean steal = true;
+//        boolean nextMatch = (currentAmountAnswers == maxNumAnswers) || steal;
 
-        if(nextMatch){
-            round++;
-            gameRound.setText("Round " + String.valueOf(round));
-            // Move to next round
-        }
+//        if(nextMatch){
+//            round++;
+//            gameRound.setText("Round " + String.valueOf(round));
+//            // Move to next round
+//        }
     }
 
     public void testFunction(MouseEvent e){
 
-        Image newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
-        team1Attempt1.setImage(newimg);
-        team1Attempt1.setFitHeight(10);
-        team1Attempt1.setFitWidth(10);
+        Label currentLabel = (Label) e.getSource();
+        String buttonId = currentLabel.getId();
+
+        if(buttonId.compareTo("team1attemptButton1") == 0){
+            Image newimg = null;
+            if(team1NumAttempts[0] == 0){
+                newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
+                team1NumAttempts[0] = 1;
+            } else if(team1NumAttempts[0] == 1){
+                newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
+                team1NumAttempts[0] = 0;
+            }
+
+            team1Attempt1.setImage(newimg);
+            team1Attempt1.setFitHeight(10);
+            team1Attempt1.setFitWidth(10);
+        } else if(buttonId.compareTo("team1attemptButton2")==0){
+            Image newimg = null;
+            if(team1NumAttempts[1] == 0){
+                newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
+                team1NumAttempts[1] = 1;
+            } else {
+                newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
+                team1NumAttempts[1] = 0;
+            }
+            team1Attempt2.setImage(newimg);
+            team1Attempt2.setFitHeight(10);
+            team1Attempt2.setFitWidth(10);
+        } else if(buttonId.compareTo("team1attemptButton3")==0){
+            Image newimg = null;
+            if(team1NumAttempts[2] == 0){
+                newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
+                team1NumAttempts[2] = 1;
+            } else {
+                newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
+                team1NumAttempts[2] = 0;
+            }
+            team1Attempt3.setImage(newimg);
+            team1Attempt3.setFitHeight(10);
+            team1Attempt3.setFitWidth(10);
+        } else if(buttonId.compareTo("team2attemptButton1")==0){
+            Image newimg = null;
+            if(team2NumAttempts[0] == 0){
+                newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
+                team2NumAttempts[0] = 1;
+            } else {
+                newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
+                team2NumAttempts[0] = 0;
+            }
+            team2Attempt1.setImage(newimg);
+            team2Attempt1.setFitHeight(10);
+            team2Attempt1.setFitWidth(10);
+        } else if(buttonId.compareTo("team2attemptButton2")==0){
+            Image newimg = null;
+            if(team2NumAttempts[1] == 0){
+                newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
+                team2NumAttempts[1] = 1;
+            } else {
+                newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
+                team2NumAttempts[1] = 0;
+            }
+            team2Attempt2.setImage(newimg);
+            team2Attempt2.setFitHeight(10);
+            team2Attempt2.setFitWidth(10);
+        } else if(buttonId.compareTo("team2attemptButton3")==0){
+            Image newimg = null;
+            if(team2NumAttempts[2] == 0){
+                newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
+                team2NumAttempts[2] = 1;
+            } else {
+                newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
+                team2NumAttempts[2] = 0;
+            }
+            team2Attempt3.setImage(newimg);
+            team2Attempt3.setFitHeight(10);
+            team2Attempt3.setFitWidth(10);
+        }
+
+
     }
 
     public void setStageAndSetupListeners(Stage primaryStage){
