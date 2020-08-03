@@ -13,11 +13,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class Controller_teams {

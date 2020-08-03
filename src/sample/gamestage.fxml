@@ -245,11 +245,11 @@
             <Label>
                 <graphic>
                     <ImageView >
-                        <Image url="@RoundPoints.png" requestedWidth="40" requestedHeight="30"/>
+                        <Image url="@RoundPoints.png" requestedWidth="50" requestedHeight="30"/>
                     </ImageView>
                 </graphic>
             </Label>
-            <Label fx:id="Team1Timer" text="00"  style="-fx-font-size:22; -fx-text-fill: white;"/>
+            <Label fx:id="Team1Timer" text="0"  style="-fx-font-size:22; -fx-text-fill: white;"/>
         </StackPane>
 
         <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1" alignment="CENTER">
@@ -260,11 +260,11 @@
             <Label>
                 <graphic>
                     <ImageView >
-                        <Image url="@RoundPoints.png" requestedWidth="40" requestedHeight="30"/>
+                        <Image url="@RoundPoints.png" requestedWidth="50" requestedHeight="30"/>
                     </ImageView>
                 </graphic>
             </Label>
-            <Label fx:id="Team2Timer" text="00"  style="-fx-font-size:22; -fx-text-fill: white;"/>
+            <Label fx:id="Team2Timer" text="0"  style="-fx-font-size:22; -fx-text-fill: white;"/>
         </StackPane>
 
 
@@ -363,6 +363,7 @@
     <!--    ======================== Answers =====================-->
 
         <GridPane alignment="center" GridPane.rowIndex="2" GridPane.columnIndex="1" hgap="10" vgap="10" gridLinesVisible="true">
+            <Label fx:id="TimerButton" style="-fx-background-color:black;-fx-font-size:18; -fx-text-fill: white;" text="Start Timer" GridPane.rowIndex="0" GridPane.columnIndex="1" onMouseClicked="#startTiming" />
             <Label fx:id="NextQuestion" style="-fx-background-color:black;-fx-font-size:18; -fx-text-fill: white;" text="Next Question" GridPane.rowIndex="1" GridPane.columnIndex="1" onMouseClicked="#goToNextQuestion">
             </Label>
             <Label fx:id="KeepPoints" style="-fx-background-color:black;-fx-font-size:18; -fx-text-fill: white;" text="Keep Points" GridPane.rowIndex="3" GridPane.columnIndex="1" onMouseClicked="#keepPoints">

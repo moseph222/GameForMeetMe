@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -17,10 +18,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.PrintStream;
+import java.util.*;
 
 public class Controller_gameStage {
 
@@ -106,6 +105,10 @@ public class Controller_gameStage {
     private Label team1Points;
     @FXML
     private Label team2Points;
+    @FXML
+    private Label Team1Timer;
+    @FXML
+    private Label Team2Timer;
 
     private int maxNumAnswers;
     private int currentAmountAnswers;
@@ -127,20 +130,21 @@ public class Controller_gameStage {
     private boolean setToStealAB = false; // Team 1 to Team2
     private boolean setToStealBA = false; // Team 2 to Team1
     private boolean noMorePoints = false;
+    private boolean timerShouldRun = false;
 
     private LinkedList<Question> Game = new LinkedList<Question>();
 
 
     // Initializing variables, arrays, and setting labels as empty or lower opacity
 
-    public void initialize(){
+    public void initialize() {
         round = 1;
         int randomNumber = 1;
         roundPointsInteger = 0;
 
         // Reading questions from a file into a LinkedList of questions
         try {
-            File game = new File("src/sample/Game"+randomNumber+".txt");
+            File game = new File("src/sample/Game" + randomNumber + ".txt");
             Scanner myReader = new Scanner(game);
             String input;
             String question = null;
@@ -150,26 +154,26 @@ public class Controller_gameStage {
 
             int lineNum = 1;
 
-            while(myReader.hasNext()){
+            while (myReader.hasNext()) {
                 input = myReader.nextLine();
-                if(input.compareTo("NEW QUESTION") != 0){
-                    if(lineNum == 1){
+                if (input.compareTo("NEW QUESTION") != 0) {
+                    if (lineNum == 1) {
                         question = input;
-                    } else if(lineNum % 2 == 0){
+                    } else if (lineNum % 2 == 0) {
                         answers.add(input);
-                    } else if(lineNum % 2 != 0){
+                    } else if (lineNum % 2 != 0) {
                         points.add(Integer.parseInt(input));
                     }
                     lineNum++;
                 } else {
                     lineNum = 1;
-                    Game.add(new Question(question,answers,points,id));
+                    Game.add(new Question(question, answers, points, id));
                     answers = new LinkedList<String>();
                     points = new LinkedList<Integer>();
                     id++;
                 }
             }
-        } catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -208,7 +212,7 @@ public class Controller_gameStage {
         gameRound.setText("Round " + String.valueOf(round));
 
         // Set the question
-        question.setText(Game.get(round-1).getQuestion());
+        question.setText(Game.get(round - 1).getQuestion());
 
         cleanAnswerButtons();
 
@@ -219,11 +223,11 @@ public class Controller_gameStage {
         // Decide first turn
         turn = (Math.random() <= 0.5) ? 1 : 2;
 
-        if(turn == 1){
+        if (turn == 1) {
             gamers = 1;
             thieves = 2;
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-        } else if(turn == 2){
+        } else if (turn == 2) {
             gamers = 2;
             thieves = 1;
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
@@ -235,92 +239,87 @@ public class Controller_gameStage {
         maxNumAnswers = Game.get(0).getAnswers().size();
         System.out.println("Max number of answer" + maxNumAnswers);
         currentAmountAnswers = 0;
-
-
-
     }
 
-
-
-
-    public static int getRandomInteger(int maximum, int minimum){
-        return ((int) (Math.random()*(maximum - minimum))) + minimum;
+    public static int getRandomInteger(int maximum, int minimum) {
+        return ((int) (Math.random() * (maximum - minimum))) + minimum;
     }
 
     public void onButtonClicked(MouseEvent e) throws IOException {
+        timerShouldRun = false;
         StackPane stacknum = (StackPane) e.getSource();
         int idnum = Integer.parseInt(stacknum.getId());
 
-        if(idnum == 1){
+        if (idnum == 1) {
             button1.setOpacity(100);
             point1.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point1.getText());
             }
 
             currentAmountAnswers++;
-        } else if(idnum == 2){
+        } else if (idnum == 2) {
             button2.setOpacity(100);
             point2.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point2.getText());
             }
 
             currentAmountAnswers++;
-        } else if (idnum == 3){
+        } else if (idnum == 3) {
             button3.setOpacity(100);
             point3.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point3.getText());
             }
 
             currentAmountAnswers++;
-        } else if(idnum ==4){
+        } else if (idnum == 4) {
             button4.setOpacity(100);
             point4.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point4.getText());
             }
             currentAmountAnswers++;
-        } else if(idnum == 5){
+        } else if (idnum == 5) {
             button5.setOpacity(100);
             point5.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point5.getText());
             }
             currentAmountAnswers++;
-        } else if(idnum == 6){
+        } else if (idnum == 6) {
             button6.setOpacity(100);
             point6.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point6.getText());
             }
             currentAmountAnswers++;
-        } else if(idnum == 7){
+        } else if (idnum == 7) {
             button7.setOpacity(100);
             point7.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point7.getText());
             }
             currentAmountAnswers++;
-        } else if(idnum ==8) {
+        } else if (idnum == 8) {
             button8.setOpacity(100);
             point8.setOpacity(100);
-            if(noMorePoints == true){
+            if (noMorePoints == true) {
                 roundPointsInteger = 0;
             } else {
                 roundPointsInteger += Integer.parseInt(point8.getText());
@@ -329,12 +328,12 @@ public class Controller_gameStage {
 
         }
 
-        if(!noMorePoints){
+        if (!noMorePoints) {
             roundPoints.setText(String.valueOf(roundPointsInteger));
         }
 
 
-        if(setToStealAB == true){
+        if (setToStealAB == true) {
             int currentPoints = Integer.parseInt(team2Points.getText());
             team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
             // Now you can't earn any more points
@@ -342,21 +341,20 @@ public class Controller_gameStage {
             // ==============ROUND OVER==================
 
 
-
-
-        } else if(setToStealBA == true){
+        } else if (setToStealBA == true) {
             int currentPoints = Integer.parseInt(team1Points.getText());
             team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
             noMorePoints = true;
             //==================== ROUND OVER======================
 
 
-        } if(currentAmountAnswers == maxNumAnswers){
-            if(noMorePoints == false){
-                if(gamers == 1){
+        }
+        if (currentAmountAnswers == maxNumAnswers) {
+            if (noMorePoints == false) {
+                if (gamers == 1) {
                     int currentPoints = Integer.parseInt(team1Points.getText());
                     team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-                } else{
+                } else {
                     int currentPoints = Integer.parseInt(team2Points.getText());
                     team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
                 }
@@ -369,14 +367,14 @@ public class Controller_gameStage {
 
 
         } else {
-            if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2]==1){
+            if (team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2] == 1) {
                 setToStealAB = true;
-            } else if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2]==1){
+                timerShouldRun = false;
+            } else if (team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2] == 1) {
                 setToStealBA = true;
+                timerShouldRun = false;
             }
         }
-
-
 
 
 //        boolean steal = true;
@@ -390,18 +388,17 @@ public class Controller_gameStage {
     }
 
 
-
-    public void AttemptHandler(MouseEvent e){
+    public void AttemptHandler(MouseEvent e) {
 
         Label currentLabel = (Label) e.getSource();
         String buttonId = currentLabel.getId();
 
-        if(buttonId.compareTo("team1attemptButton1") == 0){
+        if (buttonId.compareTo("team1attemptButton1") == 0) {
             Image newimg = null;
-            if(team1NumAttempts[0] == 0){
+            if (team1NumAttempts[0] == 0) {
                 newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
                 team1NumAttempts[0] = 1;
-            } else if(team1NumAttempts[0] == 1){
+            } else if (team1NumAttempts[0] == 1) {
                 newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
                 team1NumAttempts[0] = 0;
             }
@@ -409,9 +406,9 @@ public class Controller_gameStage {
             team1Attempt1.setImage(newimg);
             team1Attempt1.setFitHeight(10);
             team1Attempt1.setFitWidth(10);
-        } else if(buttonId.compareTo("team1attemptButton2")==0){
+        } else if (buttonId.compareTo("team1attemptButton2") == 0) {
             Image newimg = null;
-            if(team1NumAttempts[1] == 0){
+            if (team1NumAttempts[1] == 0) {
                 newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
                 team1NumAttempts[1] = 1;
             } else {
@@ -421,9 +418,9 @@ public class Controller_gameStage {
             team1Attempt2.setImage(newimg);
             team1Attempt2.setFitHeight(10);
             team1Attempt2.setFitWidth(10);
-        } else if(buttonId.compareTo("team1attemptButton3")==0){
+        } else if (buttonId.compareTo("team1attemptButton3") == 0) {
             Image newimg = null;
-            if(team1NumAttempts[2] == 0){
+            if (team1NumAttempts[2] == 0) {
                 newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
                 team1NumAttempts[2] = 1;
             } else {
@@ -433,9 +430,9 @@ public class Controller_gameStage {
             team1Attempt3.setImage(newimg);
             team1Attempt3.setFitHeight(10);
             team1Attempt3.setFitWidth(10);
-        } else if(buttonId.compareTo("team2attemptButton1")==0){
+        } else if (buttonId.compareTo("team2attemptButton1") == 0) {
             Image newimg = null;
-            if(team2NumAttempts[0] == 0){
+            if (team2NumAttempts[0] == 0) {
                 newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
                 team2NumAttempts[0] = 1;
             } else {
@@ -445,9 +442,9 @@ public class Controller_gameStage {
             team2Attempt1.setImage(newimg);
             team2Attempt1.setFitHeight(10);
             team2Attempt1.setFitWidth(10);
-        } else if(buttonId.compareTo("team2attemptButton2")==0){
+        } else if (buttonId.compareTo("team2attemptButton2") == 0) {
             Image newimg = null;
-            if(team2NumAttempts[1] == 0){
+            if (team2NumAttempts[1] == 0) {
                 newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
                 team2NumAttempts[1] = 1;
             } else {
@@ -457,9 +454,9 @@ public class Controller_gameStage {
             team2Attempt2.setImage(newimg);
             team2Attempt2.setFitHeight(10);
             team2Attempt2.setFitWidth(10);
-        } else if(buttonId.compareTo("team2attemptButton3")==0){
+        } else if (buttonId.compareTo("team2attemptButton3") == 0) {
             Image newimg = null;
-            if(team2NumAttempts[2] == 0){
+            if (team2NumAttempts[2] == 0) {
                 newimg = new Image(getClass().getResourceAsStream("RedButton.png"));
                 team2NumAttempts[2] = 1;
             } else {
@@ -472,34 +469,31 @@ public class Controller_gameStage {
         }
 
 
-
         //
         switchTeamHighlight();
 
 
     }
 
-
-
-
-    public void cleanAnswerButtons(){
+    public void cleanAnswerButtons() {
         //Clear up all text in case there's an extra answers
-        for(int i = 0; i < allButtons.size();i++){
+        for (int i = 0; i < allButtons.size(); i++) {
             answers.get(i).setText("");
             allButtons.get(i).setText("");
             points.get(i).setText("");
         }
     }
 
-    public void populateAnsFromCurQuestion(int round){
-        for(int i = 0; i < Game.get(round-1).getAnswers().size();i++){
-            allButtons.get(i).setText(Game.get(round-1).getAnswers().get(i));
-            answers.get(i).setText(Game.get(round-1).getAnswers().get(i));
-            points.get(i).setText(String.valueOf(Game.get(round-1).getPoints().get(i)));
+    public void populateAnsFromCurQuestion(int round) {
+        for (int i = 0; i < Game.get(round - 1).getAnswers().size(); i++) {
+            allButtons.get(i).setText(Game.get(round - 1).getAnswers().get(i));
+            answers.get(i).setText(Game.get(round - 1).getAnswers().get(i));
+            points.get(i).setText(String.valueOf(Game.get(round - 1).getPoints().get(i)));
         }
     }
-    public void zeroOpacityAnsFromCurQuestion(int round){
-        for(int i = 0; i < Game.get(round-1).getAnswers().size();i++){
+
+    public void zeroOpacityAnsFromCurQuestion(int round) {
+        for (int i = 0; i < Game.get(round - 1).getAnswers().size(); i++) {
             allButtons.get(i).setOpacity(0);
             points.get(i).setOpacity(0);
         }
@@ -507,7 +501,10 @@ public class Controller_gameStage {
 
     // MAKE ONE MORE BUTTON FOR STEALING FAILED
 
-    public void goToNextQuestion(){
+    public void goToNextQuestion() {
+        timerShouldRun = false;
+        Team1Timer.setText("0");
+        Team2Timer.setText("0");
         setToStealAB = false;
         setToStealBA = false;
         System.out.println(Game.size());
@@ -516,38 +513,38 @@ public class Controller_gameStage {
         round++;
         gameRound.setText("Round " + String.valueOf(round));
         swapTeamRoles();
-        System.out.println ("NEW ROUND");
+        System.out.println("NEW ROUND");
         System.out.println("gamers: " + gamers);
         System.out.println("thieves: " + thieves);
         cleanAnswerButtons();
         populateAnsFromCurQuestion(round);
         zeroOpacityAnsFromCurQuestion(round);
-        maxNumAnswers = Game.get(round-1).getAnswers().size();
-        currentAmountAnswers=0;
+        maxNumAnswers = Game.get(round - 1).getAnswers().size();
+        currentAmountAnswers = 0;
         resetAttempts();
         roundPoints.setText("000");
 
-        if(gamers == 1){
+        if (gamers == 1) {
             team2Name.setBackground(Background.EMPTY);
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-        } else if(thieves == 1){
+        } else if (thieves == 1) {
             team1Name.setBackground(Background.EMPTY);
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
         }
 
     }
 
-    public void keepPoints(){
-        if(setToStealAB){
+    public void keepPoints() {
+        if (setToStealAB) {
             int currentPoints = Integer.parseInt(team1Points.getText());
             team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-        } else if(setToStealBA){
+        } else if (setToStealBA) {
             int currentPoints = Integer.parseInt(team2Points.getText());
             team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
         }
     }
 
-    public void resetAttempts(){
+    public void resetAttempts() {
         team1NumAttempts = new int[3];
         team2NumAttempts = new int[3];
 
@@ -574,14 +571,16 @@ public class Controller_gameStage {
     }
 
 
-    public void switchTeamHighlight(){
-        if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2]==1){
+    public void switchTeamHighlight() {
+        timerShouldRun = false;
+
+        if (team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2] == 1) {
             team1Name.setBackground(Background.EMPTY);
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
             setToStealAB = true;
         }
 
-        if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2]==1){
+        if (team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2] == 1) {
             team2Name.setBackground(Background.EMPTY);
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
             setToStealBA = true;
@@ -589,19 +588,18 @@ public class Controller_gameStage {
     }
 
 
-
-    public void setStageAndSetupListeners(Stage primaryStage){
+    public void setStageAndSetupListeners(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     /**
      * Set team names and player lists.
      *
-     * @author Benjamin
-     * @param team1title Team 1's name
-     * @param team2title Team 2's name
+     * @param team1title       Team 1's name
+     * @param team2title       Team 2's name
      * @param team1playerslist Team 1's list of players
      * @param team2playerslist Team 2's list of players
+     * @author Benjamin
      */
     public void setTeams(String team1title, String team2title, List<String> team1playerslist, List<String> team2playerslist) {
         this.team1title = team1title;
@@ -609,7 +607,7 @@ public class Controller_gameStage {
         this.team1playerslist = team1playerslist;
         this.team2playerslist = team2playerslist;
         team1Name.setText(team1title);
-        team2Name.setText(team2title);;
+        team2Name.setText(team2title);
 
         setCurrentTeamAndPlayer();
     }
@@ -618,19 +616,18 @@ public class Controller_gameStage {
      * Swap team roles.
      * Gamers will become thieves and
      * thieves will become gamers.
-     *
+     * <p>
      * Gamers represent the team answering,
      * thieves represent the team that may be
      * given a chance to steal.
      *
      * @author Benjamin
      */
-    public void swapTeamRoles(){
-        if(this.gamers == 1){
+    public void swapTeamRoles() {
+        if (this.gamers == 1) {
             this.gamers = 2;
             this.thieves = 1;
-        }
-        else if(this.gamers == 2){
+        } else if (this.gamers == 2) {
             this.gamers = 1;
             this.thieves = 2;
         }
@@ -640,11 +637,11 @@ public class Controller_gameStage {
      * Method to return the team digit of whom is currently playing
      * (either team 1 or team 2)
      *
-     * @author Benjamin
      * @return number of current team
+     * @author Benjamin
      */
     public int getCurrentTeamNum() {
-        if(setToSteal)
+        if (setToSteal)
             return thieves;
         else
             return gamers;
@@ -653,18 +650,17 @@ public class Controller_gameStage {
     /**
      * Method to return the team name of whom is currently playing
      *
-     * @author Benjamin
      * @return name of current team
+     * @author Benjamin
      */
     public String getCurrentTeam() {
-        if(setToSteal) {
-            if(thieves == 1)
+        if (setToSteal) {
+            if (thieves == 1)
                 return team1title;
             else
                 return team2title;
-        }
-        else {
-            if(gamers == 1)
+        } else {
+            if (gamers == 1)
                 return team1title;
             else
                 return team2title;
@@ -678,16 +674,15 @@ public class Controller_gameStage {
      * Before a player name is returned, the respective
      * player list is rotated by 1.
      *
-     * @author Benjamin
      * @return name of current player
+     * @author Benjamin
      */
     public String getCurrentPlayer() {
-        if(getCurrentTeamNum() == 1) {
-            Collections.rotate(team1playerslist,1);
+        if (getCurrentTeamNum() == 1) {
+            Collections.rotate(team1playerslist, 1);
             return this.team1playerslist.get(0);
-        }
-        else {
-            Collections.rotate(team2playerslist,1);
+        } else {
+            Collections.rotate(team2playerslist, 1);
             return this.team2playerslist.get(0);
         }
     }
@@ -696,4 +691,56 @@ public class Controller_gameStage {
         currentPlayer.setText(this.getCurrentPlayer());
         currentTeam.setText(this.getCurrentTeam());
     }
+
+    public void startTiming(MouseEvent mouseEvent) throws FileNotFoundException {
+        if(timerShouldRun == true) {
+            timerShouldRun = false;
+        }
+        else {
+            if(this.setToStealBA) {
+                startTimer(60,Team1Timer);
+            }
+            else if (this.setToStealAB) {
+                startTimer(60,Team2Timer);
+            }
+            else if (gamers == 1) {
+                startTimer(20,Team1Timer);
+            }
+            else {
+                startTimer(20,Team2Timer);
+            }
+        }
+    }
+
+    public void startTimer(int seconds, Label clock) {
+        timerShouldRun = true;
+        System.out.println("Start");
+        Thread one = new Thread() {
+            private double i = seconds * 10;
+            public void run() {
+                try {
+                    while (i + 1 > 0 && timerShouldRun) {
+                        i--;
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (i <= 0)
+                                    clock.setText("0");
+                                else
+                                    clock.setText("" + i / 10);
+                            }
+                        });
+
+                        Thread.sleep(100);
+                    }
+                } catch (InterruptedException v) {
+                    System.out.println(v);
+                }
+            }
+        };
+        one.start();
+        System.out.println("End");
+    }
+
+
 }
