@@ -102,6 +102,10 @@ public class Controller_gameStage {
     private Label currentPlayer;
     @FXML
     private Label currentTeam;
+    @FXML
+    private Label team1Points;
+    @FXML
+    private Label team2Points;
 
     private int maxNumAnswers;
     private int currentAmountAnswers;
@@ -109,8 +113,10 @@ public class Controller_gameStage {
     private List<String> team2playerslist;
     private String team1title;
     private String team2title;
-    private int[] team1NumAttempts = new int[3];
+    private int[] team1NumAttempts = new int[3]; // array of trials per team
     private int[] team2NumAttempts = new int[3];
+    private LinkedList<Text> allButtons = new LinkedList<Text>();
+    private LinkedList<Text> points = new LinkedList<Text>();
 
     int turn = 0;
 
@@ -119,6 +125,9 @@ public class Controller_gameStage {
     private boolean setToSteal = false;
 
     private LinkedList<Question> Game = new LinkedList<Question>();
+
+
+    // Initializing variables, arrays, and setting labels as empty or lower opacity
 
     public void initialize(){
         round = 1;
@@ -162,7 +171,7 @@ public class Controller_gameStage {
 
 
         // Creating a linkedList for all the buttons and point buttons
-        LinkedList<Text> allButtons = new LinkedList<Text>();
+
         allButtons.add(button1);
         allButtons.add(button2);
         allButtons.add(button3);
@@ -172,7 +181,7 @@ public class Controller_gameStage {
         allButtons.add(button7);
         allButtons.add(button8);
 
-        LinkedList<Text> points = new LinkedList<Text>();
+
         points.add(point1);
         points.add(point2);
         points.add(point3);
@@ -197,21 +206,28 @@ public class Controller_gameStage {
 
         // Decide first turn
         turn = getRandomInteger(0,1);
-        if(turn == 1){
+
+        if(turn == 0){
             gamers = 1;
             thieves = 2;
-            team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
-        } else if(turn == 2){
+            team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+        } else if(turn == 1){
             gamers = 2;
             thieves = 1;
-            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
+            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
         }
 
-        maxNumAnswers = Game.get(round-1).getAnswers().size();
-        currentAmountAnswers = 1;
+        maxNumAnswers = Game.get(0).getAnswers().size();
+        System.out.println("Max number of answer" + maxNumAnswers);
+        currentAmountAnswers = 0;
 
         gameRound.setText("Round " + String.valueOf(round));
     }
+
+
+
+
+
 
     public static int getRandomInteger(int maximum, int minimum){
         return ((int) (Math.random()*(maximum - minimum))) + minimum;
@@ -220,41 +236,78 @@ public class Controller_gameStage {
     public void onButtonClicked(MouseEvent e) throws IOException {
         StackPane stacknum = (StackPane) e.getSource();
         int idnum = Integer.parseInt(stacknum.getId());
+
         if(idnum == 1){
             button1.setOpacity(100);
             point1.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point1.getText());
+            currentAmountAnswers++;
         } else if(idnum == 2){
             button2.setOpacity(100);
             point2.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point2.getText());
+            currentAmountAnswers++;
         } else if (idnum == 3){
             button3.setOpacity(100);
             point3.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point3.getText());
+            currentAmountAnswers++;
         } else if(idnum ==4){
             button4.setOpacity(100);
             point4.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point4.getText());
+            currentAmountAnswers++;
         } else if(idnum == 5){
             button5.setOpacity(100);
             point5.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point5.getText());
+            currentAmountAnswers++;
         } else if(idnum == 6){
             button6.setOpacity(100);
             point6.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point6.getText());
+            currentAmountAnswers++;
         } else if(idnum == 7){
             button7.setOpacity(100);
             point7.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point7.getText());
+            currentAmountAnswers++;
         } else if(idnum ==8) {
             button8.setOpacity(100);
             point8.setOpacity(100);
             roundPointsInteger += Integer.parseInt(point8.getText());
+            currentAmountAnswers++;
         }
 
         roundPoints.setText(String.valueOf(roundPointsInteger));
+
+
+        // When all answers are correct
+        if(currentAmountAnswers == maxNumAnswers){
+            for(int i = 0; i < allButtons.size();i++){
+                allButtons.get(i).setOpacity(0);
+                points.get(i).setOpacity(0);
+            }
+
+            if(gamers == 1){
+                int currentPoints = Integer.parseInt(team1Points.getText());
+                team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+                team1Name.setBackground(Background.EMPTY);
+                team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+            } else {
+                int currentPoints = Integer.parseInt(team2Points.getText());
+                team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+                team2Name.setBackground(Background.EMPTY);
+                team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+            }
+
+            roundPointsInteger = 0;
+            roundPoints.setText("000");
+
+
+
+        }
+
 
 //        boolean steal = true;
 //        boolean nextMatch = (currentAmountAnswers == maxNumAnswers) || steal;
@@ -266,7 +319,7 @@ public class Controller_gameStage {
 //        }
     }
 
-    public void testFunction(MouseEvent e){
+    public void AttemptHandler(MouseEvent e){
 
         Label currentLabel = (Label) e.getSource();
         String buttonId = currentLabel.getId();
@@ -346,7 +399,23 @@ public class Controller_gameStage {
             team2Attempt3.setFitWidth(10);
         }
 
+        //
+        switchTeamHighlight();
 
+
+    }
+
+
+    public void switchTeamHighlight(){
+        if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2]==1){
+            team1Name.setBackground(Background.EMPTY);
+            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+        }
+
+        if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2]==1){
+            team2Name.setBackground(Background.EMPTY);
+            team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+        }
     }
 
     public void setStageAndSetupListeners(Stage primaryStage){
