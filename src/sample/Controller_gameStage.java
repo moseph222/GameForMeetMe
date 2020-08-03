@@ -117,12 +117,16 @@ public class Controller_gameStage {
     private int[] team2NumAttempts = new int[3];
     private LinkedList<Text> allButtons = new LinkedList<Text>();
     private LinkedList<Text> points = new LinkedList<Text>();
+    private LinkedList<Text> answers = new LinkedList<Text>();
 
     int turn = 0;
 
     private int gamers = 1;   // players answering are by default team 1
     private int thieves = 2;  // players set to steal are by default team 2
     private boolean setToSteal = false;
+    private boolean setToStealAB = false; // Team 1 to Team2
+    private boolean setToStealBA = false; // Team 2 to Team1
+    private boolean noMorePoints = false;
 
     private LinkedList<Question> Game = new LinkedList<Question>();
 
@@ -181,6 +185,15 @@ public class Controller_gameStage {
         allButtons.add(button7);
         allButtons.add(button8);
 
+        answers.add(ans1);
+        answers.add(ans2);
+        answers.add(ans3);
+        answers.add(ans4);
+        answers.add(ans5);
+        answers.add(ans6);
+        answers.add(ans7);
+        answers.add(ans8);
+
 
         points.add(point1);
         points.add(point2);
@@ -191,40 +204,41 @@ public class Controller_gameStage {
         points.add(point7);
         points.add(point8);
 
+        // Set the round label
+        gameRound.setText("Round " + String.valueOf(round));
+
+        // Set the question
         question.setText(Game.get(round-1).getQuestion());
 
-        for(int i = 0; i < allButtons.size();i++){
-            allButtons.get(i).setText("");
-            points.get(i).setText("");
-        }
+        cleanAnswerButtons();
 
-        for(int i = 0; i < Game.get(round-1).getAnswers().size();i++){
-            allButtons.get(i).setText(Game.get(round-1).getAnswers().get(i));
-            points.get(i).setText(String.valueOf(Game.get(round-1).getPoints().get(i)));
-        }
+        //Populate with all answers
+        populateAnsFromCurQuestion(round);
 
 
         // Decide first turn
-        turn = getRandomInteger(0,1);
+        turn = (Math.random() <= 0.5) ? 1 : 2;
 
-        if(turn == 0){
+        if(turn == 1){
             gamers = 1;
             thieves = 2;
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-        } else if(turn == 1){
+        } else if(turn == 2){
             gamers = 2;
             thieves = 1;
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
         }
 
+        System.out.println("gamers: " + gamers);
+        System.out.println("thieves: " + thieves);
+        //Gets the answers of the first game
         maxNumAnswers = Game.get(0).getAnswers().size();
         System.out.println("Max number of answer" + maxNumAnswers);
         currentAmountAnswers = 0;
 
-        gameRound.setText("Round " + String.valueOf(round));
+
+
     }
-
-
 
 
 
@@ -240,73 +254,129 @@ public class Controller_gameStage {
         if(idnum == 1){
             button1.setOpacity(100);
             point1.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point1.getText());
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
+            } else {
+                roundPointsInteger += Integer.parseInt(point1.getText());
+            }
+
             currentAmountAnswers++;
         } else if(idnum == 2){
             button2.setOpacity(100);
             point2.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point2.getText());
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
+            } else {
+                roundPointsInteger += Integer.parseInt(point2.getText());
+            }
+
             currentAmountAnswers++;
         } else if (idnum == 3){
             button3.setOpacity(100);
             point3.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point3.getText());
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
+            } else {
+                roundPointsInteger += Integer.parseInt(point3.getText());
+            }
+
             currentAmountAnswers++;
         } else if(idnum ==4){
             button4.setOpacity(100);
             point4.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point4.getText());
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
+            } else {
+                roundPointsInteger += Integer.parseInt(point4.getText());
+            }
             currentAmountAnswers++;
         } else if(idnum == 5){
             button5.setOpacity(100);
             point5.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point5.getText());
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
+            } else {
+                roundPointsInteger += Integer.parseInt(point5.getText());
+            }
             currentAmountAnswers++;
         } else if(idnum == 6){
             button6.setOpacity(100);
             point6.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point6.getText());
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
+            } else {
+                roundPointsInteger += Integer.parseInt(point6.getText());
+            }
             currentAmountAnswers++;
         } else if(idnum == 7){
             button7.setOpacity(100);
             point7.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point7.getText());
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
+            } else {
+                roundPointsInteger += Integer.parseInt(point7.getText());
+            }
             currentAmountAnswers++;
         } else if(idnum ==8) {
             button8.setOpacity(100);
             point8.setOpacity(100);
-            roundPointsInteger += Integer.parseInt(point8.getText());
-            currentAmountAnswers++;
-        }
-
-        roundPoints.setText(String.valueOf(roundPointsInteger));
-
-
-        // When all answers are correct
-        if(currentAmountAnswers == maxNumAnswers){
-            for(int i = 0; i < allButtons.size();i++){
-                allButtons.get(i).setOpacity(0);
-                points.get(i).setOpacity(0);
-            }
-
-            if(gamers == 1){
-                int currentPoints = Integer.parseInt(team1Points.getText());
-                team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-                team1Name.setBackground(Background.EMPTY);
-                team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+            if(noMorePoints == true){
+                roundPointsInteger = 0;
             } else {
-                int currentPoints = Integer.parseInt(team2Points.getText());
-                team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-                team2Name.setBackground(Background.EMPTY);
-                team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+                roundPointsInteger += Integer.parseInt(point8.getText());
             }
-
-            roundPointsInteger = 0;
-            roundPoints.setText("000");
-
-
+            currentAmountAnswers++;
 
         }
+
+        if(!noMorePoints){
+            roundPoints.setText(String.valueOf(roundPointsInteger));
+        }
+
+
+        if(setToStealAB == true){
+            int currentPoints = Integer.parseInt(team2Points.getText());
+            team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+            // Now you can't earn any more points
+            noMorePoints = true;
+            // ==============ROUND OVER==================
+
+
+
+
+        } else if(setToStealBA == true){
+            int currentPoints = Integer.parseInt(team1Points.getText());
+            team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+            noMorePoints = true;
+            //==================== ROUND OVER======================
+
+
+        } if(currentAmountAnswers == maxNumAnswers){
+            if(noMorePoints == false){
+                if(gamers == 1){
+                    int currentPoints = Integer.parseInt(team1Points.getText());
+                    team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+                } else{
+                    int currentPoints = Integer.parseInt(team2Points.getText());
+                    team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+                }
+
+                roundPointsInteger = 0;
+
+            }
+
+            // ======================ROUND OVER==============
+
+
+        } else {
+            if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2]==1){
+                setToStealAB = true;
+            } else if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2]==1){
+                setToStealBA = true;
+            }
+        }
+
+
 
 
 //        boolean steal = true;
@@ -318,6 +388,8 @@ public class Controller_gameStage {
 //            // Move to next round
 //        }
     }
+
+
 
     public void AttemptHandler(MouseEvent e){
 
@@ -399,6 +471,8 @@ public class Controller_gameStage {
             team2Attempt3.setFitWidth(10);
         }
 
+
+
         //
         switchTeamHighlight();
 
@@ -406,17 +480,115 @@ public class Controller_gameStage {
     }
 
 
+
+
+    public void cleanAnswerButtons(){
+        //Clear up all text in case there's an extra answers
+        for(int i = 0; i < allButtons.size();i++){
+            answers.get(i).setText("");
+            allButtons.get(i).setText("");
+            points.get(i).setText("");
+        }
+    }
+
+    public void populateAnsFromCurQuestion(int round){
+        for(int i = 0; i < Game.get(round-1).getAnswers().size();i++){
+            allButtons.get(i).setText(Game.get(round-1).getAnswers().get(i));
+            answers.get(i).setText(Game.get(round-1).getAnswers().get(i));
+            points.get(i).setText(String.valueOf(Game.get(round-1).getPoints().get(i)));
+        }
+    }
+    public void zeroOpacityAnsFromCurQuestion(int round){
+        for(int i = 0; i < Game.get(round-1).getAnswers().size();i++){
+            allButtons.get(i).setOpacity(0);
+            points.get(i).setOpacity(0);
+        }
+    }
+
+    // MAKE ONE MORE BUTTON FOR STEALING FAILED
+
+    public void goToNextQuestion(){
+        setToStealAB = false;
+        setToStealBA = false;
+        System.out.println(Game.size());
+        roundPointsInteger = 0;
+        noMorePoints = false;
+        round++;
+        gameRound.setText("Round " + String.valueOf(round));
+        swapTeamRoles();
+        System.out.println ("NEW ROUND");
+        System.out.println("gamers: " + gamers);
+        System.out.println("thieves: " + thieves);
+        cleanAnswerButtons();
+        populateAnsFromCurQuestion(round);
+        zeroOpacityAnsFromCurQuestion(round);
+        maxNumAnswers = Game.get(round-1).getAnswers().size();
+        currentAmountAnswers=0;
+        resetAttempts();
+        roundPoints.setText("000");
+
+        if(gamers == 1){
+            team2Name.setBackground(Background.EMPTY);
+            team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+        } else if(thieves == 1){
+            team1Name.setBackground(Background.EMPTY);
+            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+        }
+
+    }
+
+    public void keepPoints(){
+        if(setToStealAB){
+            int currentPoints = Integer.parseInt(team1Points.getText());
+            team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+        } else if(setToStealBA){
+            int currentPoints = Integer.parseInt(team2Points.getText());
+            team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+        }
+    }
+
+    public void resetAttempts(){
+        team1NumAttempts = new int[3];
+        team2NumAttempts = new int[3];
+
+        Image newimg = new Image(getClass().getResourceAsStream("GreenButton.png"));
+
+        team1Attempt1.setImage(newimg);
+        team1Attempt1.setFitHeight(10);
+        team1Attempt1.setFitWidth(10);
+        team1Attempt2.setImage(newimg);
+        team1Attempt2.setFitHeight(10);
+        team1Attempt2.setFitWidth(10);
+        team1Attempt2.setImage(newimg);
+        team1Attempt2.setFitHeight(10);
+        team1Attempt2.setFitWidth(10);
+        team2Attempt1.setImage(newimg);
+        team2Attempt1.setFitHeight(10);
+        team2Attempt1.setFitWidth(10);
+        team2Attempt2.setImage(newimg);
+        team2Attempt2.setFitHeight(10);
+        team2Attempt2.setFitWidth(10);
+        team2Attempt3.setImage(newimg);
+        team2Attempt3.setFitHeight(10);
+        team2Attempt3.setFitWidth(10);
+    }
+
+
     public void switchTeamHighlight(){
         if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2]==1){
             team1Name.setBackground(Background.EMPTY);
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+            setToStealAB = true;
         }
 
         if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2]==1){
             team2Name.setBackground(Background.EMPTY);
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+            setToStealBA = true;
         }
     }
+
+
 
     public void setStageAndSetupListeners(Stage primaryStage){
         this.primaryStage = primaryStage;
