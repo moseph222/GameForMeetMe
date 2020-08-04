@@ -146,6 +146,9 @@ public class Controller_gameStage {
 
     }
     public void LoadQuestions(){
+
+
+
         round = 1;
         if(Gamefile == 0){
             Gamefile = 1;
@@ -243,6 +246,15 @@ public class Controller_gameStage {
             thieves = 1;
             team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
         }
+
+        if(team1Name.getText() == null){
+            team1Name.setText("Team 1");
+        }
+
+        if(team2Name.getText() == null){
+            team2Name.setText("Team 2");
+        }
+
         //Gets the answers of the first game
         maxNumAnswers = Game.get(0).getAnswers().size();
         System.out.println("Max number of answer" + maxNumAnswers);
@@ -515,6 +527,7 @@ public class Controller_gameStage {
             primaryStage.setScene(new Scene(root, 720, 640));
             return;
         }
+
         setToStealAB = false;
         setToStealBA = false;
         System.out.println(Game.size());
@@ -522,6 +535,7 @@ public class Controller_gameStage {
         noMorePoints = false;
         round++;
         gameRound.setText("Round " + String.valueOf(round));
+        question.setText(Game.get(round - 1).getQuestion());
         swapTeamRoles();
         cleanAnswerButtons();
         populateAnsFromCurQuestion(round);
@@ -530,6 +544,7 @@ public class Controller_gameStage {
         currentAmountAnswers = 0;
         resetAttempts();
         roundPoints.setText("000");
+
 
         if (gamers == 1) {
             team2Name.setBackground(Background.EMPTY);
