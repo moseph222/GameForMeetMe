@@ -18,8 +18,8 @@
     </columnConstraints>
 
     <GridPane alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0" >
-        <GridPane alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0" >
-            <Label fx:id="question" wrapText="true"  textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0" text="Here goes the questions"  style="-fx-font-size:16; -fx-text-fill:white"/>
+        <GridPane alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0"  hgap="10" vgap="10" >
+            <Label fx:id="question" wrapText="true"  textAlignment="CENTER" maxWidth="280" GridPane.rowIndex="0" GridPane.columnIndex="0" text="Here goes the questions"  style="-fx-font-size:16; -fx-text-fill:white"/>
         </GridPane>
         <GridPane alignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="0" >
             <Label fx:id="gameRound" GridPane.rowIndex="1" GridPane.columnIndex="0" text="Here goes the questions"  style="-fx-font-size:14; -fx-text-fill:white"/>
@@ -253,7 +253,7 @@
         </StackPane>
 
         <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1" alignment="CENTER">
-            <Label  fx:id="team1Name" text="Team 1" style="-fx-font-size:15; -fx-text-fill: white;"/>
+            <Label fx:id="team1Name" text="Team 1" style="-fx-font-size:15; -fx-text-fill: white;"/>
         </GridPane>
 
         <StackPane GridPane.rowIndex="0" GridPane.columnIndex="3" >
