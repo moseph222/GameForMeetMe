@@ -19,41 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="55efb8a6-c992-4b7f-bbd4-6b88248f9a45" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Game3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sample/Game3.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/description.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameForMeetMe.iml" beforeDir="false" afterPath="$PROJECT_DIR$/GameForMeetMe.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_gameStage$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_gameStage$1$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_gameStage$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_gameStage$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_gameStage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_gameStage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_start.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_start.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_teams.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Controller_teams.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/FileReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/FileReader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Game2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Game2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Question.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Timer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/Timer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/gamestage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameForMeetMe/sample/gamestage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller_gameStage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller_gameStage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller_start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller_start.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller_teams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller_teams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Game2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Game2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Question.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/sample.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/stage2.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/stage2.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="55efb8a6-c992-4b7f-bbd4-6b88248f9a45" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
