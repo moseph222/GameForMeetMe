@@ -25,6 +25,11 @@ public class Controller_start {
     public void initialize(){
         Team1.setMaxWidth(250);
         Team2.setMaxWidth(250);
+
+        if(Main.Debugging()) {
+            Team1.setText("Minecraft Manhunters");
+            Team2.setText("The Ross Racers");
+        }
     }
 
     @FXML

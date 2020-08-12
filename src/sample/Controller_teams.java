@@ -8,25 +8,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-<<<<<<< Updated upstream
-import javafx.scene.control.TextField;
-=======
 import javafx.scene.input.KeyEvent;
->>>>>>> Stashed changes
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
-
-//hello
 
 public class Controller_teams {
 
@@ -44,35 +35,31 @@ public class Controller_teams {
     private Button submit;
 
     private Stage primaryStage;
-    private List<String> team1playerslist;
-    private List<String> team2playerslist;
-    private List<String> totalPlayers;
+    private List<Player> team1playerslist;
+    private List<Player> team2playerslist;
+    private List<Player> totalPlayers;
     private String team1Name;
     private String team2Name;
+    private int gameFile = 0;
 
     public void initialize() throws FileNotFoundException {
-<<<<<<< Updated upstream
-
         // File with 151 questions
-        File file = new File("E:\\Documents\\Sample_FF_Questions.txt");
-        Scanner scan = new Scanner(file);
-        scan.useDelimiter("   ");
-        int num = 0;
-        int index = 0;
-        String next = "";
-        String question = "";
-        String answer[] = new String[5];
-=======
+//        File file = new File("E:\\Documents\\Sample_FF_Questions.txt");
+//        Scanner scan = new Scanner(file);
+//        scan.useDelimiter("   ");
+//        int num = 0;
+//        int index = 0;
+//        String next = "";
+//        String question = "";
+//        String answer[] = new String[5];
         System.out.println("Team Stage Initialized");
->>>>>>> Stashed changes
-
 
         StageTitle.setText("Team Selection");
         StageTitle.setFont(new Font("Cambria", 32));
 
-        team1playerslist = new ArrayList<String>();
-        team2playerslist = new ArrayList<String>();
-        totalPlayers = new ArrayList<String>();
+        team1playerslist = new ArrayList<Player>();
+        team2playerslist = new ArrayList<Player>();
+        totalPlayers = new ArrayList<Player>();
 
         Team1Players.setFont(new Font("Cambria", 18));
         Team1Players.setMaxHeight(200);
@@ -85,6 +72,12 @@ public class Controller_teams {
         Team2Players.setWrapText(true);
 
         submit.setDisable(true);
+
+        if(Main.Debugging()) {
+            Team1Players.setText("Eden, Mcluvin, Moseph");
+            Team2Players.setText("Emma, Benjamin, Joseph");
+            submit.setDisable(false);
+        }
     }
 
     @FXML
@@ -104,22 +97,22 @@ public class Controller_teams {
         //Team2Players.setEditable(false);
 
         // Debugging
-
-        System.out.println("Team 1 Players");
-        for(int i = 0; i < team1playerslist.size(); i++)
-        {
-            System.out.println("["+team1playerslist.get(i)+"]");
+        if(Main.Debugging()) {
+            System.out.println("Team 1 Players");
+            for (int i = 0; i < team1playerslist.size(); i++) {
+                System.out.println("[" + team1playerslist.get(i) + "]");
+            }
+            System.out.println("Team 2 Players");
+            for (int i = 0; i < team2playerslist.size(); i++) {
+                System.out.println("[" + team2playerslist.get(i) + "]");
+            }
         }
-        System.out.println("Team 2 Players");
-        for(int i = 0; i < team2playerslist.size(); i++)
-        {
-            System.out.println("["+team2playerslist.get(i)+"]");
-        }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("stage2.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gamestage.fxml"));
         Parent root = (Parent)loader.load();
         Controller_gameStage gameStage = loader.getController();
         gameStage.setTeams(team1Name, team2Name, team1playerslist, team2playerslist);
+        gameStage.chooseGameFile(gameFile);
         gameStage.setStageAndSetupListeners(primaryStage);
         primaryStage.setScene(new Scene(root, 720, 640));
     }
@@ -194,7 +187,7 @@ public class Controller_teams {
         this.checkSubmitStatus();
     }
 
-    public void parsePlayers(TextArea players, List<String> list) {
+    public void parsePlayers(TextArea players, List<Player> list) {
         String input = players.getText();
         String name = "";
         int index = 0;
@@ -206,14 +199,14 @@ public class Controller_teams {
                 name = players.getText().substring(index,i);
                 index = i+1;
                 if(name.matches("[a-zA-Z]+"))
-                    list.add(name);
+                    list.add(new Player(name));
             }
         }
 
         // Add last entry
         name = players.getText().substring(index,input.length());
         if(name.matches("[a-zA-Z]+"))
-            list.add(name);
+            list.add(new Player(name));
     }
 
     public void setTeamNames(String team1_name, String team2_name) {
@@ -221,11 +214,16 @@ public class Controller_teams {
         Team2Title.setText("Team "+team2_name+":");
         team1Name = team1_name;
         team2Name = team2_name;
-        System.out.println("setTeamNames called");
+        //System.out.println("setTeamNames called");
     }
 
     public void setStageAndSetupListeners(Stage primaryStage){
         this.primaryStage = primaryStage;
+    }
+
+    public void chooseGameFile(int gameFile){
+        System.out.println("Inside endScreen: " + gameFile);
+        this.gameFile = gameFile;
     }
 
     @FXML
