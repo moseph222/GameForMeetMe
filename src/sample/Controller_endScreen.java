@@ -28,21 +28,41 @@ public class Controller_endScreen {
     }
 
     public void setStageAndSetupListeners(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+        primaryStage = primaryStage;
     }
 
-    public void setWinnerTeam(String winnerTeam, List<String> winnerTeamPlayerList1) {
-        this.winnerTeamStr = winnerTeam;
-        this.winnerTeamPlayerList = winnerTeamPlayerList1;
-        this.winnerTeam.setText(winnerTeamStr);
-        String team = "";
+    public void passTeams(Team team1, Team team2) {
+        if(team1.getTotalPoints() > team2.getTotalPoints())
+            team1.setWinner();
+        else
+            team2.setWinner();
 
-        for(int i = 0; i < winnerTeamPlayerList.size(); i++){
-            team = team + winnerTeamPlayerList.get(i) + "  ";
+        if(Main.Debugging()) {
+            System.out.println(team1.getStats());
+            for(int i = 0; i < team1.getPlayers().size(); i++)
+            {
+                System.out.println(team1.getPlayer(i).getStats());
+            }
+            System.out.println(team2.getStats());
+            for(int i = 0; i < team2.getPlayers().size(); i++)
+            {
+                System.out.println(team2.getPlayer(i).getStats());
+            }
         }
-
-        teamPlayers.setText(team);
     }
+    //TODO rehandle pulling winning team and stats
+//    public void setWinnerTeam(String winnerTeam, List<String> winnerTeamPlayerList1) {
+//        this.winnerTeamStr = winnerTeam;
+//        this.winnerTeamPlayerList = winnerTeamPlayerList1;
+//        this.winnerTeam.setText(winnerTeamStr);
+//        String team = "";
+//
+//        for(int i = 0; i < winnerTeamPlayerList.size(); i++){
+//            team = team + winnerTeamPlayerList.get(i) + "  ";
+//        }
+//
+//        teamPlayers.setText(team);
+//    }
 
     public void startNewGame() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("pickteams.fxml"));

@@ -14,17 +14,19 @@ import java.io.IOException;
 
 public class Controller_start {
 
-    @FXML
-    private TextField Team1;
-    @FXML
-    private TextField Team2;
-    @FXML
-    private Label StartButton;
+    @FXML private TextField Team1;
+    @FXML private TextField Team2;
+    @FXML private Label StartButton;
     Stage primaryStage;
 
     public void initialize(){
         Team1.setMaxWidth(250);
         Team2.setMaxWidth(250);
+
+        if(Main.Debugging()) {
+            Team1.setText("Minecraft Manhunters");
+            Team2.setText("The Ross Racers");
+        }
     }
 
     @FXML

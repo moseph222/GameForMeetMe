@@ -15,110 +15,67 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.*;
 
 public class Controller_gameStage {
+    @FXML private Text button1;
+    @FXML private Text button2;
+    @FXML private Text button3;
+    @FXML private Text button4;
+    @FXML private Text button5;
+    @FXML private Text button6;
+    @FXML private Text button7;
+    @FXML private Text button8;
+    @FXML private Text point1;
+    @FXML private Text point2;
+    @FXML private Text point3;
+    @FXML private Text point4;
+    @FXML private Text point5;
+    @FXML private Text point6;
+    @FXML private Text point7;
+    @FXML private Text point8;
+    @FXML private Label question;
+    @FXML private Text ans1;
+    @FXML private Text ans2;
+    @FXML private Text ans3;
+    @FXML private Text ans4;
+    @FXML private Text ans5;
+    @FXML private Text ans6;
+    @FXML private Text ans7;
+    @FXML private Text ans8;
+    @FXML private Label gameRound;
+    @FXML private ImageView team1Attempt1;
+    @FXML private ImageView team1Attempt2;
+    @FXML private ImageView team1Attempt3;
+    @FXML private ImageView team2Attempt1;
+    @FXML private ImageView team2Attempt2;
+    @FXML private ImageView team2Attempt3;
+    @FXML private Label roundPoints;
+    @FXML private Label team1Name;
+    @FXML private Label team2Name;
+    @FXML private Label currentPlayer;
+    @FXML private Label currentTeam;
+    @FXML private Label team1Points;
+    @FXML private Label team2Points;
+    @FXML private Label Team1Timer;
+    @FXML private Label Team2Timer;
 
     Stage primaryStage;
     private LinkedList<Text> buttons;
-    @FXML
-    private Text button1;
-    @FXML
-    private Text button2;
-    @FXML
-    private Text button3;
-    @FXML
-    private Text button4;
-    @FXML
-    private Text button5;
-    @FXML
-    private Text button6;
-    @FXML
-    private Text button7;
-    @FXML
-    private Text button8;
-    @FXML
-    private Text point1;
-    @FXML
-    private Text point2;
-    @FXML
-    private Text point3;
-    @FXML
-    private Text point4;
-    @FXML
-    private Text point5;
-    @FXML
-    private Text point6;
-    @FXML
-    private Text point7;
-    @FXML
-    private Text point8;
-    @FXML
-    private Label question;
-    @FXML
-    private Text ans1;
-    @FXML
-    private Text ans2;
-    @FXML
-    private Text ans3;
-    @FXML
-    private Text ans4;
-    @FXML
-    private Text ans5;
-    @FXML
-    private Text ans6;
-    @FXML
-    private Text ans7;
-    @FXML
-    private Text ans8;
-    @FXML
-    private Label gameRound;
-    @FXML
-    private ImageView team1Attempt1;
-    @FXML
-    private ImageView team1Attempt2;
-    @FXML
-    private ImageView team1Attempt3;
-    @FXML
-    private ImageView team2Attempt1;
-    @FXML
-    private ImageView team2Attempt2;
-    @FXML
-    private ImageView team2Attempt3;
     private int round = 0;
-    @FXML
-    private Label roundPoints;
     private int roundPointsInteger;
-    @FXML
-    private Label team1Name;
-    @FXML
-    private Label team2Name;
-    @FXML
-    private Label currentPlayer;
-    @FXML
-    private Label currentTeam;
-    @FXML
-    private Label team1Points;
-    @FXML
-    private Label team2Points;
-    @FXML
-    private Label Team1Timer;
-    @FXML
-    private Label Team2Timer;
-
     private int maxNumAnswers;
-    private int currentAmountAnswers;
-    private List<String> team1playerslist;
-    private List<String> team2playerslist;
-    private String team1title;
-    private String team2title;
+    private int currentAmountAnswered = 0;
+    private Team team1;
+    private Team team2;
     private int[] team1NumAttempts = new int[3]; // array of trials per team
     private int[] team2NumAttempts = new int[3];
     private LinkedList<Text> allButtons = new LinkedList<Text>();
@@ -126,35 +83,23 @@ public class Controller_gameStage {
     private LinkedList<Text> answers = new LinkedList<Text>();
     private int Gamefile = 0;
 
-    int turn = 0;
-
-    private int gamers = 1;   // players answering are by default team 1
-    private int thieves = 2;  // players set to steal are by default team 2
-    private boolean setToSteal = false;
-    private boolean setToStealAB = false; // Team 1 to Team2
-    private boolean setToStealBA = false; // Team 2 to Team1
     private boolean noMorePoints = false;
     private boolean timerShouldRun = false;
 
-    private LinkedList<Question> Game = new LinkedList<Question>();
-
-
-    // Initializing variables, arrays, and setting labels as empty or lower opacity
+    private LinkedList<Round> Game = new LinkedList<Round>();
+    private Round currentRound;
 
     public void initialize(){
 
-
     }
+
     public void LoadQuestions(){
-
-
-
+        int turn = 0;
         round = 1;
         if(Gamefile == 0){
-            Gamefile = 1;
+            Gamefile = 3;
         }
         roundPointsInteger = 0;
-        
 
         // Reading questions from a file into a LinkedList of questions
         try {
@@ -181,7 +126,7 @@ public class Controller_gameStage {
                     lineNum++;
                 } else {
                     lineNum = 1;
-                    Game.add(new Question(question, answers, points, id));
+                    Game.add(new Round(question, answers, points, id));
                     answers = new LinkedList<String>();
                     points = new LinkedList<Integer>();
                     id++;
@@ -190,6 +135,7 @@ public class Controller_gameStage {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        currentRound = Game.get(round-1);
 
 
         // Creating a linkedList for all the buttons and point buttons
@@ -222,30 +168,18 @@ public class Controller_gameStage {
         points.add(point7);
         points.add(point8);
 
-        // Set the round label
-        gameRound.setText("Round " + String.valueOf(round));
-
-        // Set the question
-        question.setText(Game.get(round - 1).getQuestion());
-
         cleanAnswerButtons();
 
         //Populate with all answers
         populateAnsFromCurQuestion(round);
 
-
-        // Decide first turn
+        // Decide who goes first
         turn = (Math.random() <= 0.5) ? 1 : 2;
-
-        if (turn == 1) {
-            gamers = 1;
-            thieves = 2;
-            team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-        } else if (turn == 2) {
-            gamers = 2;
-            thieves = 1;
-            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-        }
+        if (turn == 1)
+            Game.get(0).setCurrentTeam(team2);
+        else if (turn == 2)
+            Game.get(0).setCurrentTeam(team1);
+        switchTeams();
 
         if(team1Name.getText() == null){
             team1Name.setText("Team 1");
@@ -255,146 +189,55 @@ public class Controller_gameStage {
             team2Name.setText("Team 2");
         }
 
-        //Gets the answers of the first game
-        maxNumAnswers = Game.get(0).getAnswers().size();
-        System.out.println("Max number of answer" + maxNumAnswers);
-        currentAmountAnswers = 0;
-    }
+        if(Main.Debugging()) {
+            System.out.println(currentRound.getCurrentTeam()+" selected to go first.");
+        }
 
-    public static int getRandomInteger(int maximum, int minimum) {
-        return ((int) (Math.random() * (maximum - minimum))) + minimum;
+        //Gets the answers of the first game
+        maxNumAnswers = currentRound.getAnswers().size();
+
+        refreshLabels();
     }
 
     public void onButtonClicked(MouseEvent e) throws IOException {
-        timerShouldRun = false;
         StackPane stacknum = (StackPane) e.getSource();
         int idnum = Integer.parseInt(stacknum.getId());
 
-        if (idnum == 1) {
-            button1.setOpacity(100);
-            point1.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point1.getText());
-            }
+        // If button has already been pressed, do nothing
+        if(((StackPane) e.getSource()).getChildren().get(1).getOpacity() == 100)
+            return;
 
-            currentAmountAnswers++;
-        } else if (idnum == 2) {
-            button2.setOpacity(100);
-            point2.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point2.getText());
-            }
+        timerShouldRun = false;
+        currentAmountAnswered++;
 
-            currentAmountAnswers++;
-        } else if (idnum == 3) {
-            button3.setOpacity(100);
-            point3.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point3.getText());
-            }
-
-            currentAmountAnswers++;
-        } else if (idnum == 4) {
-            button4.setOpacity(100);
-            point4.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point4.getText());
-            }
-            currentAmountAnswers++;
-        } else if (idnum == 5) {
-            button5.setOpacity(100);
-            point5.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point5.getText());
-            }
-            currentAmountAnswers++;
-        } else if (idnum == 6) {
-            button6.setOpacity(100);
-            point6.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point6.getText());
-            }
-            currentAmountAnswers++;
-        } else if (idnum == 7) {
-            button7.setOpacity(100);
-            point7.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point7.getText());
-            }
-            currentAmountAnswers++;
-        } else if (idnum == 8) {
-            button8.setOpacity(100);
-            point8.setOpacity(100);
-            if (noMorePoints == true) {
-                roundPointsInteger = 0;
-            } else {
-                roundPointsInteger += Integer.parseInt(point8.getText());
-            }
-            currentAmountAnswers++;
-
+        if (noMorePoints == true) {
+            roundPointsInteger = 0;
+        }
+        else if(currentRound.hasChanceToSteal() == false){
+            roundPointsInteger += Integer.parseInt(points.get(idnum-1).getText());
+            currentRound.getCurrentPlayer().storeTempPoints(roundPointsInteger);
+            currentRound.getCurrentTeam().rotatePlayers();
         }
 
-        if (!noMorePoints) {
-            roundPoints.setText(String.valueOf(roundPointsInteger));
-        }
+        ((StackPane) e.getSource()).getChildren().get(1).setOpacity(100);
+        points.get(idnum-1).setOpacity(100);
 
-
-        if (setToStealAB == true) {
-            int currentPoints = Integer.parseInt(team2Points.getText());
-            team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-            // Now you can't earn any more points
+        // Handle stealing
+        if(currentRound.hasChanceToSteal()) {
+            roundPointsInteger += Integer.parseInt(points.get(idnum-1).getText());
+            currentRound.getCurrentTeam().addStolenPoints(roundPointsInteger);
+            currentRound.getOtherTeam().clearTeamTempPoints();
             noMorePoints = true;
-            // ==============ROUND OVER==================
+        }
 
-
-        } else if (setToStealBA == true) {
-            int currentPoints = Integer.parseInt(team1Points.getText());
-            team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+        // Handle slam dunk
+        if (currentAmountAnswered == maxNumAnswers && noMorePoints == false) {
+            currentRound.getCurrentTeam().addPoints(roundPointsInteger);
+            currentRound.getCurrentTeam().increaseSlamDunks();
             noMorePoints = true;
-            //==================== ROUND OVER======================
-
-
         }
-        if (currentAmountAnswers == maxNumAnswers) {
-            if (noMorePoints == false) {
-                if (gamers == 1) {
-                    int currentPoints = Integer.parseInt(team1Points.getText());
-                    team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-                } else {
-                    int currentPoints = Integer.parseInt(team2Points.getText());
-                    team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-                }
 
-                roundPointsInteger = 0;
-
-            }
-
-            // ======================ROUND OVER==============
-
-
-        } else {
-            if (team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2] == 1) {
-                setToStealAB = true;
-                timerShouldRun = false;
-            } else if (team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2] == 1) {
-                setToStealBA = true;
-                timerShouldRun = false;
-            }
-        }
+        refreshLabels();
     }
 
 
@@ -477,9 +320,13 @@ public class Controller_gameStage {
             team2Attempt3.setFitWidth(10);
         }
 
-
-        //
-        switchTeamHighlight();
+        // If a team has 3 strikes, switch teams
+        if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2] == 1) {
+            switchTeams();
+        }
+        else if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2] == 1) {
+            switchTeams();
+        }
 
 
     }
@@ -494,12 +341,34 @@ public class Controller_gameStage {
     }
 
     public void populateAnsFromCurQuestion(int round) {
-        for (int i = 0; i < Game.get(round - 1).getAnswers().size(); i++) {
-            allButtons.get(i).setText(Game.get(round - 1).getAnswers().get(i));
+        int numOfAnswers = Game.get(round - 1).getAnswers().size();
+        double maxAnsWidth = 130;
+        double ansWidth;
+        double fontSize;
+
+        for (int i = 0; i < numOfAnswers; i++) {
+            allButtons.get(i).setText("   "+Game.get(round - 1).getAnswers().get(i).toUpperCase()+"   ");
             answers.get(i).setText(Game.get(round - 1).getAnswers().get(i));
             points.get(i).setText(String.valueOf(Game.get(round - 1).getPoints().get(i)));
+            // Styling
+            Text answer = new Text(Game.get(round - 1).getAnswers().get(i).toUpperCase());
+            ansWidth = answer.getLayoutBounds().getWidth();
+            fontSize = 16;
+            // Text Scaling
+            if(ansWidth > maxAnsWidth) {
+                fontSize = 16 * maxAnsWidth / ansWidth;
+            }
+            allButtons.get(i).setFont(Font.font("sans-serif", FontWeight.BOLD, fontSize));
+            // End of styling
+        }
+
+        // For all buttons and points that don't get populated, hide
+        for (int i = numOfAnswers; i < 8; i++) {
+            allButtons.get(i).getParent().setOpacity(0);
+            points.get(i).getParent().setOpacity(0);
         }
     }
+
 
     public void zeroOpacityAnsFromCurQuestion(int round) {
         for (int i = 0; i < Game.get(round - 1).getAnswers().size(); i++) {
@@ -507,63 +376,45 @@ public class Controller_gameStage {
             points.get(i).setOpacity(0);
         }
     }
-    
+
     public void goToNextQuestion() throws IOException {
         timerShouldRun = false;
-        Team1Timer.setText("0");
-        Team2Timer.setText("0");
+
+        //if game is over, proceed to end screen
         if(round == Game.size()){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("endScreen.fxml"));
-            Parent root = (Parent)loader.load();
-            Controller_endScreen endgame = (Controller_endScreen)loader.getController();
-            endgame.setStageAndSetupListeners(primaryStage);
-            int t1 = Integer.parseInt(team1Points.getText());
-            int t2 = Integer.parseInt(team2Points.getText());
-            if(t1 > t2){
-                endgame.setWinnerTeam(team1title, team1playerslist);
-            } else {
-                endgame.setWinnerTeam(team2title, team2playerslist);
-            }
-            primaryStage.setScene(new Scene(root, 720, 640));
-            return;
+            endGame();
         }
 
-        setToStealAB = false;
-        setToStealBA = false;
-        System.out.println(Game.size());
         roundPointsInteger = 0;
         noMorePoints = false;
         round++;
-        gameRound.setText("Round " + String.valueOf(round));
-        question.setText(Game.get(round - 1).getQuestion());
-        swapTeamRoles();
         cleanAnswerButtons();
         populateAnsFromCurQuestion(round);
         zeroOpacityAnsFromCurQuestion(round);
         maxNumAnswers = Game.get(round - 1).getAnswers().size();
-        currentAmountAnswers = 0;
+        currentAmountAnswered = 0;
         resetAttempts();
-        roundPoints.setText("000");
 
-
-        if (gamers == 1) {
-            team2Name.setBackground(Background.EMPTY);
-            team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-        } else if (thieves == 1) {
-            team1Name.setBackground(Background.EMPTY);
-            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-        }
-
+        // Set the current team of the new round to the last playing team
+        currentRound.setCurrentTeam(Game.get(round-2).getCurrentTeam());
+        // If the team previously playing was stealing, they should go first
+        // Otherwise, the teams should switch for the new round
+        if(Game.get(round-2).hasChanceToSteal() == false)
+            switchTeams();
+        refreshLabels();
     }
 
     public void keepPoints() {
-        if (setToStealAB) {
-            int currentPoints = Integer.parseInt(team1Points.getText());
-            team1Points.setText(String.valueOf(currentPoints + roundPointsInteger));
-        } else if (setToStealBA) {
-            int currentPoints = Integer.parseInt(team2Points.getText());
-            team2Points.setText(String.valueOf(currentPoints + roundPointsInteger));
+        // Upon failure to steal, and host presses "keep points" button
+        if(currentRound.hasChanceToSteal()) {
+            // The current player is the team set to steal, so we must switch
+            switchTeams();
+            currentRound.setChanceToSteal(false);
+            // After switching we can add points to the correct team
+            currentRound.getCurrentTeam().addPoints(roundPointsInteger);
+            noMorePoints = true;
         }
+        refreshLabels();
     }
 
     public void resetAttempts() {
@@ -592,26 +443,53 @@ public class Controller_gameStage {
         team2Attempt3.setFitWidth(10);
     }
 
-
-    public void switchTeamHighlight() {
-        timerShouldRun = false;
-
-        if (team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2] == 1) {
-            team1Name.setBackground(Background.EMPTY);
-            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-            setToStealAB = true;
+    public void refreshLabels() {
+        // Refresh question
+        Text ques = new Text(currentRound.getQuestion());
+        double maxQuesWidth = 445;
+        double quesWidth = ques.getLayoutBounds().getWidth();
+        double fontSize = 18;
+        if(quesWidth > maxQuesWidth) {
+            fontSize = fontSize * maxQuesWidth / quesWidth;
         }
+        question.setFont(Font.font("sans-serif", FontWeight.BOLD, fontSize));
+        question.setText(currentRound.getQuestion());
 
-        if (team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2] == 1) {
+        // Refresh round counter
+        gameRound.setText("Round " + String.valueOf(round));
+
+        // Refresh team names
+        team1Name.setText(team1.toString());
+        team2Name.setText(team2.toString());
+
+        // Refresh current team indication
+        if(currentRound.getCurrentTeam().equals(team1)) {
             team2Name.setBackground(Background.EMPTY);
             team1Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
-            setToStealBA = true;
         }
+        else if(currentRound.getCurrentTeam().equals(team2)) {
+            team1Name.setBackground(Background.EMPTY);
+            team2Name.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-2.0))));
+        }
+
+        // Refresh point counters
+        roundPoints.setText(roundPointsInteger+"");
+        team1Points.setText(team1.getTotalPoints()+"");
+        team2Points.setText(team2.getTotalPoints()+"");
+
+        // Refresh timers
+        if(timerShouldRun == false) {
+            Team1Timer.setText("0");
+            Team2Timer.setText("0");
+        }
+
+        // Refresh current team and player labels for host
+        setCurrentTeamAndPlayerLabels();
     }
 
 
     public void setStageAndSetupListeners(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+        primaryStage = primaryStage;
     }
 
     /**
@@ -623,70 +501,48 @@ public class Controller_gameStage {
      * @param team2playerslist Team 2's list of players
      * @author Benjamin
      */
-    public void setTeams(String team1title, String team2title, List<String> team1playerslist, List<String> team2playerslist) {
-        this.team1title = team1title;
-        this.team2title = team2title;
-        this.team1playerslist = team1playerslist;
-        this.team2playerslist = team2playerslist;
+    public void setTeams(String team1title, String team2title, List<Player> team1playerslist, List<Player> team2playerslist) {
+        team1 = new Team(team1title, team1playerslist);
+        team2 = new Team(team2title, team2playerslist);
         team1Name.setText(team1title);
         team2Name.setText(team2title);
-        setCurrentTeamAndPlayer();
     }
 
-    /**
-     * Swap team roles.
-     * Gamers will become thieves and
-     * thieves will become gamers.
-     * <p>
-     * Gamers represent the team answering,
-     * thieves represent the team that may be
-     * given a chance to steal.
-     *
-     * @author Benjamin
-     */
-    public void swapTeamRoles() {
-        if (this.gamers == 1) {
-            this.gamers = 2;
-            this.thieves = 1;
-        } else if (this.gamers == 2) {
-            this.gamers = 1;
-            this.thieves = 2;
+    public void switchTeams() {
+        if(currentRound.getCurrentTeam().equals(team1)) {
+            currentRound.setCurrentTeam(team2);
+            if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2] == 1)
+                currentRound.setChanceToSteal(true);
         }
-    }
-
-    /**
-     * Method to return the team digit of whom is currently playing
-     * (either team 1 or team 2)
-     *
-     * @return number of current team
-     * @author Benjamin
-     */
-    public int getCurrentTeamNum() {
-        if (setToSteal)
-            return thieves;
-        else
-            return gamers;
-    }
-
-    /**
-     * Method to return the team name of whom is currently playing
-     *
-     * @return name of current team
-     * @author Benjamin
-     */
-    public String getCurrentTeam() {
-        if (setToSteal) {
-            if (thieves == 1)
-                return team1title;
-            else
-                return team2title;
-        } else {
-            if (gamers == 1)
-                return team1title;
-            else
-                return team2title;
+        else if(currentRound.getCurrentTeam().equals(team2)) {
+            currentRound.setCurrentTeam(team1);
+            if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2] == 1)
+                currentRound.setChanceToSteal(true);
         }
+        else {
+            // This should never happen
+            System.err.print("ERROR: "+currentRound.getCurrentTeam());
+            System.err.println(" is the current team. This should not happen.");
+        }
+
+        refreshLabels();
     }
+
+//    /**
+//     * Method to return the team digit of whom is currently playing
+//     * (either team 1 or team 2)
+//     *
+//     * @return number of current team
+//     * @author Benjamin
+//     */
+//    public int getCurrentTeamNum() {
+//        if (setToSteal)
+//            return thieves;
+//        else
+//            return gamers;
+//    }
+
+
 
     /**
      * Method to return the name of the current player.
@@ -698,19 +554,21 @@ public class Controller_gameStage {
      * @return name of current player
      * @author Benjamin
      */
-    public String getCurrentPlayer() {
-        if (getCurrentTeamNum() == 1) {
-            Collections.rotate(team1playerslist, 1);
-            return this.team1playerslist.get(0);
-        } else {
-            Collections.rotate(team2playerslist, 1);
-            return this.team2playerslist.get(0);
-        }
-    }
-
-    public void setCurrentTeamAndPlayer() {
-        currentPlayer.setText(this.getCurrentPlayer());
-        currentTeam.setText(this.getCurrentTeam());
+//    public String getCurrentPlayer() {
+//        if (getCurrentTeamNum() == 1) {
+//            Collections.rotate(team1playerslist, 1);
+//            return team1playerslist.get(0);
+//        } else {
+//            Collections.rotate(team2playerslist, 1);
+//            return team2playerslist.get(0);
+//        }
+//    }
+//
+    public void setCurrentTeamAndPlayerLabels() {
+        currentPlayer.setText(currentRound.getCurrentPlayer().toString());
+        currentTeam.setText(currentRound.getCurrentTeam().toString());
+        if(currentRound.hasChanceToSteal())
+            currentPlayer.setText("STEALING");
     }
 
     public void startTiming(MouseEvent mouseEvent) throws FileNotFoundException {
@@ -718,24 +576,23 @@ public class Controller_gameStage {
             timerShouldRun = false;
         }
         else {
-            if(this.setToStealBA) {
-                startTimer(60,Team1Timer);
+            if (currentRound.getCurrentTeam().equals(team1)) {
+                if(currentRound.hasChanceToSteal())
+                    startTimer(60,Team1Timer);
+                else
+                    startTimer(20,Team1Timer);
             }
-            else if (this.setToStealAB) {
-                startTimer(60,Team2Timer);
-            }
-            else if (gamers == 1) {
-                startTimer(20,Team1Timer);
-            }
-            else {
-                startTimer(20,Team2Timer);
+            else if (currentRound.getCurrentTeam().equals(team2)) {
+                if(currentRound.hasChanceToSteal())
+                    startTimer(60,Team2Timer);
+                else
+                    startTimer(20,Team2Timer);
             }
         }
     }
 
     public void startTimer(int seconds, Label clock) {
         timerShouldRun = true;
-        System.out.println("Start");
         Thread one = new Thread() {
             private double i = seconds * 10;
             public void run() {
@@ -760,12 +617,27 @@ public class Controller_gameStage {
             }
         };
         one.start();
-        System.out.println("End");
     }
 
+    public void endGame() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("endScreen.fxml"));
+        Parent root = (Parent)loader.load();
+        Controller_endScreen endgame = (Controller_endScreen)loader.getController();
+        endgame.setStageAndSetupListeners(primaryStage);
+        endgame.passTeams(team1, team2);
+//            int t1 = Integer.parseInt(team1Points.getText());
+//            int t2 = Integer.parseInt(team2Points.getText());
+//            if(t1 > t2){
+//                endgame.setWinnerTeam(team1title, team1playerslist);
+//            } else {
+//                endgame.setWinnerTeam(team2title, team2playerslist);
+//            }
+        primaryStage.setScene(new Scene(root, 720, 640));
+        return;
+    }
 
     public void chooseGameFile(int gameFile){
         System.out.println("Inside gameStage: " + gameFile);
-        this.Gamefile = gameFile;
+        Gamefile = gameFile;
     }
 }
