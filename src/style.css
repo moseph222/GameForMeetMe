@@ -1,0 +1,77 @@
+.header {
+    -fx-background-color:#6d4a92;
+}
+
+.body {
+    -fx-background-color:#f7f7f7;
+}
+
+.footer {
+    -fx-background-color:#6d4a92;
+    -fx-border-color:#f2f2f2;
+    -fx-border-width:1 0 0 0;
+}
+
+// --------Game Stage--------
+
+.answer {
+    -fx-text-fill:white;
+    -fx-background-color:E04543;
+    -fx-border-color:f2f2f2;
+    -fx-border-width:0 1 1 0;
+}
+
+.answerHover {
+    -fx-text-fill:white;
+    -fx-background-color:B33737;
+    -fx-border-color:f2f2f2;
+    -fx-border-width:0 1 1 0;
+}
+
+.button {
+    -fx-fill: white;
+    -fx-padding: 2;
+}
+
+.points {
+    -fx-background-color:black;
+    -fx-font-size:22;
+    -fx-text-fill:white;
+}
+
+// --------Settings Stage--------
+
+#settingsTitle {
+    -fx-font-size:32;
+    -fx-text-fill:white;
+    -fx-font-weight:bold;
+    -fx-font-family:"sans-serif";
+    -fx-padding: 10, 0, 10, 0;
+    -fx-alignment:"center";
+}
+
+#settingsBody {
+//    -fx-border-color:f2f2f2;
+//    -fx-border-width:1 1 1 1;
+    -fx-padding: 30, 0, 0, 0;
+}
+
+.settingsHeading {
+    -fx-font-family:"sans-serif";
+    -fx-font-size:16;
+    -fx-text-fill:white;
+}
+
+.textBox {
+    -fx-font-size:18;
+    -fx-font-family:"Cambria";
+}
+
+#settingsFooter {
+    -fx-padding: 30, 0, 0, 0;
+}
+
+.settingsButton {
+    -fx-font-family:"sans-serif";
+    -fx-padding: 4;
+}
