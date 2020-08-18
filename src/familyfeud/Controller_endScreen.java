@@ -2,26 +2,34 @@ package familyfeud;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Controller_endScreen {
 
-    @FXML private Label winnerTeam;
-    @FXML private Label teamPlayers;
-    @FXML private TextArea GameNumber;
-    private String winnerTeamStr;
+    @FXML private VBox topStatsPane;
+    @FXML private VBox bottomStatsPane;
+    @FXML private ComboBox winners;
+    @FXML private ComboBox losers;
     private Stage primaryStage;
-    private List<String> winnerTeamPlayerList;
     private LinkedList<Round> game;
     private int gameFile = 0;
+    private Team winningTeam;
+    private Team losingTeam;
 
     public void initialize(){
 
@@ -35,25 +43,57 @@ public class Controller_endScreen {
     public void passGame(LinkedList<Round> game, int gameFile) {
         this.game = game;
         this.gameFile = gameFile;
-        Team teamA = game.get(0).getCurrentTeam();
-        Team teamB = game.get(0).getOtherTeam();
-        if(teamA.getTotalPoints() > teamB.getTotalPoints())
-            teamA.setWinner();
-        else
-            teamB.setWinner();
 
-        if(Main.Debugging()) {
-            System.out.println(teamA.getStats());
-            for(int i = 0; i < teamA.getPlayers().size(); i++)
-            {
-                System.out.println(teamA.getPlayer(i).getStats());
+        // Determine Game Winner
+        if(game.get(0).getCurrentTeam().getTotalPoints() > game.get(0).getOtherTeam().getTotalPoints()) {
+            game.get(0).getCurrentTeam().setWinner();
+            winningTeam = game.get(0).getCurrentTeam();
+            losingTeam = game.get(0).getOtherTeam();
+        }
+        else {
+            game.get(0).getOtherTeam().setWinner();
+            winningTeam = game.get(0).getOtherTeam();
+            losingTeam = game.get(0).getCurrentTeam();
+        }
+
+        // Debugging
+        if (Main.Debugging()) {
+            System.out.println(winningTeam.getStats());
+            for (int i = 0; i < winningTeam.getPlayers().size(); i++) {
+                System.out.println(winningTeam.getPlayer(i).getStats());
             }
-            System.out.println(teamB.getStats());
-            for(int i = 0; i < teamB.getPlayers().size(); i++)
-            {
-                System.out.println(teamB.getPlayer(i).getStats());
+            System.out.println(losingTeam.getStats());
+            for (int i = 0; i < losingTeam.getPlayers().size(); i++) {
+                System.out.println(losingTeam.getPlayer(i).getStats());
             }
         }
+
+        // By default, show team stats
+        showTeamStats();
+
+        setUpComboBox(winners, winningTeam);
+        setUpComboBox(losers, losingTeam);
+    }
+
+    public void populatePane(VBox pane, String text) {
+        pane.getChildren().clear();
+        Scanner scan = new Scanner(text);
+        Label line;
+        boolean firstLine = true;
+        while(scan.hasNextLine()) {
+            line = new Label(scan.nextLine().trim());
+
+            if(firstLine) {
+                line.getStyleClass().add("statsTitle");
+                line.setFont(new Font("sans-serif", 32));
+                firstLine = false;
+            }
+            else {
+                line.getStyleClass().add("stats");
+            }
+            pane.getChildren().add(line);
+        }
+        scan.close();
     }
 
     public void startNewGame() throws IOException {
@@ -78,5 +118,39 @@ public class Controller_endScreen {
 //        }
 //
 //        teamPlayers.setText(team);
+    }
+
+    public void showTeamStats(MouseEvent e) {
+        VBox parent = (VBox) ((Button) e.getSource()).getParent();
+        if(parent.getId().equals("hostViewTop")) {
+            populatePane(topStatsPane, winningTeam.getStats());
+        }
+        else if(parent.getId().equals("hostViewBottom")) {
+            populatePane(bottomStatsPane, losingTeam.getStats());
+        }
+    }
+
+    public void showTeamStats() {
+        populatePane(topStatsPane, winningTeam.getStats());
+        populatePane(bottomStatsPane, losingTeam.getStats());
+    }
+
+    public void showPlayerStats(MouseEvent e) {
+        VBox parent = (VBox) ((Button) e.getSource()).getParent();
+        HBox container = (HBox) parent.getChildren().get(0);
+        ComboBox comboBox = (ComboBox) container.getChildren().get(1);
+
+        if(parent.getId().equals("hostViewTop")) {
+            populatePane(topStatsPane, ((Player) comboBox.getValue()).getStats());
+        }
+        else if(parent.getId().equals("hostViewBottom")) {
+            populatePane(bottomStatsPane, ((Player) comboBox.getValue()).getStats());
+        }
+    }
+
+    public void setUpComboBox(ComboBox combo, Team team) {
+        for(int i=0; i < team.getPlayers().size(); i++) {
+            combo.getItems().add(team.getPlayer(i));
+        }
     }
 }

@@ -28,6 +28,6 @@ public class Main extends Application {
 
     // return true if debugging
     public static boolean Debugging() {
-        return false;
+        return true;
     }
 }

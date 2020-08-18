@@ -19,7 +19,7 @@
     </rowConstraints>
 
     <VBox id="settingsTitle" GridPane.rowIndex="0">
-        <Label text="Team Selection" style="-fx-text-fill:white" />
+        <Label text="Team Selection" style="-fx-text-fill:white;" />
     </VBox>
 
     <VBox id="settingsBody" GridPane.rowIndex="1" spacing="10">

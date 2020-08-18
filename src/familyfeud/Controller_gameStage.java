@@ -1,5 +1,6 @@
 package familyfeud;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -53,6 +54,7 @@ public class Controller_gameStage {
     @FXML private Button timerButton;
     @FXML private Button nextQuesButton;
     @FXML private Button strikeButton;
+    @FXML private Button revealButton;
 
     private Stage primaryStage;
     private int round = 0;
@@ -64,6 +66,7 @@ public class Controller_gameStage {
     private Team team2;
     private int gameFile = 0;
 
+    private boolean revealed;
     private boolean noMorePoints = false;
     private boolean timerShouldRun = false;
 
@@ -73,6 +76,8 @@ public class Controller_gameStage {
     private AudioClip bellEffect = new AudioClip(new File("src/familyfeud/sounds/bell.mp3").toURI().toString());
     // Media credit: https://www.youtube.com/watch?v=NtKEMWX8OqU
     private AudioClip strikeEffect = new AudioClip(new File("src/familyfeud/sounds/strike.mp3").toURI().toString());
+    // Media credit: https://www.youtube.com/watch?v=NtKEMWX8OqU
+    private AudioClip cardEffect = new AudioClip(new File("src/familyfeud/sounds/card.wav").toURI().toString());
 
     private LinkedList<Round> Game = new LinkedList<Round>();
 
@@ -160,10 +165,10 @@ public class Controller_gameStage {
 
         bellEffect.play();
         BorderPane front = (BorderPane) e.getSource();
-        StackPane stack = (StackPane) front.getParent();
+        StackPane stack = (StackPane) ((BorderPane)e.getSource()).getParent();
         BorderPane back = (BorderPane) stack.getChildren().get(0);
 
-        animateFlip(front, back);
+        animateFlip(stack);
 
         //int idnum = Integer.parseInt(front.getId());
         Label points = (Label) back.getRight();
@@ -180,7 +185,7 @@ public class Controller_gameStage {
         }
         else if(Game.get(round-1).hasChanceToSteal() == false){
             roundPointsInteger += Integer.parseInt(points.getText());
-            Game.get(round-1).getCurrentPlayer().storeTempPoints(roundPointsInteger);
+            Game.get(round-1).getCurrentPlayer().storeTempPoints(roundPointsInteger, 1);
             Game.get(round-1).getCurrentTeam().rotatePlayers();
         }
 
@@ -199,6 +204,7 @@ public class Controller_gameStage {
         if (currentAmountAnswered == maxNumAnswers && noMorePoints == false) {
             Game.get(round-1).getCurrentTeam().addPoints(roundPointsInteger);
             Game.get(round-1).getCurrentTeam().increaseSlamDunks();
+            revealed = true;
             noMorePoints = true;
             if(Main.Debugging())
                 System.out.println("Slam Dunk occurred: "+roundPointsInteger+" points.");
@@ -269,11 +275,15 @@ public class Controller_gameStage {
 
             back.setLeft(answer);
             back.setRight(points);
+            back.setId("coverFace");
+            front.setId("answerFace");
             front.setCenter(placeholder);
             front.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
                     onAnswerChosen(e);
+                    BorderPane pane = (BorderPane) e.getSource();
+                    System.out.println(pane.getId()+" clicked");
                 }
             });
             front.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -321,29 +331,66 @@ public class Controller_gameStage {
     }
 
     public void goToNextQuestion() throws IOException {
-        timerShouldRun = false;
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                flipAllAnswers((StackPane) ansVBox.getChildren().get(0));
+                FadeTransition fadeOut = new FadeTransition(Duration.millis(500),question.getParent());
+                fadeOut.setFromValue(10);
+                fadeOut.setToValue(0);
+
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(500),question.getParent());
+                fadeIn.setFromValue(0);
+                fadeIn.setToValue(10);
+
+                fadeOut.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        round++;
+                        // Refresh question
+                        Text ques = new Text(Game.get(round-1).getQuestion());
+                        double maxQuesWidth = 445;
+                        double quesWidth = ques.getLayoutBounds().getWidth();
+                        double fontSize = 18;
+                        if(quesWidth > maxQuesWidth) {
+                            fontSize = fontSize * maxQuesWidth / quesWidth;
+                        }
+                        question.setFont(Font.font("sans-serif", FontWeight.BOLD, fontSize));
+                        question.setText(Game.get(round-1).getQuestion());
+                        fadeIn.play();
+                    }
+                });
+                fadeOut.play();
+                Thread.sleep(200*maxNumAnswers);
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                timerShouldRun = false;
+                roundPointsInteger = 0;
+                noMorePoints = false;
+                cleanAnswerButtons();
+                populateAnsFromCurQuestion(round);
+                maxNumAnswers = Game.get(round - 1).getAnswers().size();
+                currentAmountAnswered = 0;
+                revealed = false;
+                // Set the current team of the new round to the last playing team
+                Game.get(round-1).setCurrentTeam(Game.get(round-2).getCurrentTeam());
+                // If the team previously playing was stealing, they should go first
+                // Otherwise, the teams should switch for the new round
+                if(Game.get(round-2).hasChanceToSteal() == false)
+                    switchTeams();
+                refreshLabels();
+            }
+        });
 
         //if game is over, proceed to end screen
-        if(round == Game.size()){
+        if(round == Game.size())
             endGame();
-            return;
-        }
-
-        roundPointsInteger = 0;
-        noMorePoints = false;
-        round++;
-        cleanAnswerButtons();
-        populateAnsFromCurQuestion(round);
-        maxNumAnswers = Game.get(round - 1).getAnswers().size();
-        currentAmountAnswered = 0;
-
-        // Set the current team of the new round to the last playing team
-        Game.get(round-1).setCurrentTeam(Game.get(round-2).getCurrentTeam());
-        // If the team previously playing was stealing, they should go first
-        // Otherwise, the teams should switch for the new round
-        if(Game.get(round-2).hasChanceToSteal() == false)
-            switchTeams();
-        refreshLabels();
+        else
+            new Thread(sleeper).start();
     }
 
     public void keepPoints() {
@@ -406,7 +453,13 @@ public class Controller_gameStage {
         if(noMorePoints) {
             strikes = 0;
             strikeButton.setDisable(true);
-            nextQuesButton.setDisable(false);
+            if(revealButton.isDisable() && !revealed) {
+                revealButton.setDisable(false);
+            }
+            else
+            {
+                nextQuesButton.setDisable(false);
+            }
         }
         else {
             strikeButton.setDisable(false);
@@ -529,14 +582,16 @@ public class Controller_gameStage {
         one.start();
     }
 
-    public void animateFlip(Node front, Node back) {
-        ScaleTransition stHideFront = new ScaleTransition(Duration.millis(100), front);
+    public void animateFlip(StackPane stack) {
+        Duration speed = Duration.millis(100);
+        BorderPane back = (BorderPane) stack.getChildren().get(0);
+        BorderPane front = (BorderPane) stack.getChildren().get(1);
+        back.setScaleY(0);
+        ScaleTransition stHideFront = new ScaleTransition(speed, front);
         stHideFront.setFromY(1);
         stHideFront.setToY(0);
 
-        back.setScaleY(0);
-
-        ScaleTransition stShowBack = new ScaleTransition(Duration.millis(100), back);
+        ScaleTransition stShowBack = new ScaleTransition(speed, back);
         stShowBack.setFromY(0);
         stShowBack.setToY(1);
 
@@ -544,6 +599,7 @@ public class Controller_gameStage {
             @Override
             public void handle(ActionEvent t) {
                 stShowBack.play();
+                front.toBack();
             }
         });
 
@@ -605,6 +661,70 @@ public class Controller_gameStage {
     public void chooseGameFile(int gameFile){
         System.out.println("Game #"+gameFile+" selected.");
         this.gameFile = gameFile;
+    }
+
+    public void revealAnswers(MouseEvent e) {
+        flipAllAnswers((StackPane) ansVBox.getChildren().get(0), "answerFace");
+        revealed = true;
+        ((Button) e.getSource()).setDisable(true);
+        refreshLabels();
+    }
+
+    public void flipAllAnswers(StackPane first) {
+        cardEffect.play();
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                if(ansVBox.getChildren().indexOf(first) != 0)
+                    Thread.sleep(150);
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                animateFlip(first);
+                int oldIndex = ansVBox.getChildren().indexOf(first);
+                if(ansVBox.getChildren().size() != oldIndex+1)
+                    flipAllAnswers((StackPane) ansVBox.getChildren().get(oldIndex+1));
+            }
+        });
+        new Thread(sleeper).start();
+    }
+
+    public void flipAllAnswers(StackPane first, String exceptionID) {
+        cardEffect.play();
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                if(ansVBox.getChildren().indexOf(first) != 0)
+                    Thread.sleep(150);
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                int oldIndex = ansVBox.getChildren().indexOf(first);
+                if(!first.getChildren().get(0).getId().equals(exceptionID))
+                    animateFlip(first);
+                //Find the next non-excepted node
+                if(ansVBox.getChildren().size() != oldIndex+1)
+                {
+                    for(int i = oldIndex+1; i < maxNumAnswers; i++) {
+                        if(Main.Debugging())
+                            System.out.println("Checking node "+i);
+                        if(((StackPane) ansVBox.getChildren().get(i)).getChildren().get(0).getId().equals(exceptionID) == false) {
+                            if(Main.Debugging())
+                                System.out.println(((StackPane) ansVBox.getChildren().get(i)).getChildren().get(0).getId() + " is id of Node "+i+", flipping");
+                            flipAllAnswers((StackPane) ansVBox.getChildren().get(i),exceptionID);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        new Thread(sleeper).start();
     }
 
     //TODO deprecated method

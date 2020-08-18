@@ -117,7 +117,7 @@ public class Team {
     public String getStats() {
         String output = "";
         output += toString()+":\n";
-        output += "\t"+getPlayers()+"\n";
+        output += "\t"+getPlayers().toString().substring(1,getPlayers().toString().length()-1)+"\n";
         output += "\tMVP: "+calculateMVP()+"\n";
         output += "\t"+getTotalPoints()+" total points\n";
         output += "\t"+getStolenPoints()+" points stolen from ";

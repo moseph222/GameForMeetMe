@@ -10,6 +10,7 @@ public class Player {
     private int bestRound = 0;
     private int correctAns = 0;
     private int tempPoints = 0;
+    private int tempAns = 0;
     private boolean isMVP = false;
     private List<Double> times;
 
@@ -19,7 +20,6 @@ public class Player {
 
     public void addPoints(int points) {
         this.points += points;
-        addAnswer();
     }
 
     public void addStrike() {
@@ -30,8 +30,9 @@ public class Player {
         this.bestRound = bestRound;
     }
 
-    public void addAnswer() {
-        correctAns++;
+    public void addAnswers(int answers) {
+        correctAns += answers;
+        System.out.println(toString()+" +"+answers+" answer(s)");
     }
 
     public void setMVPStatus(boolean status) {
@@ -42,12 +43,14 @@ public class Player {
         times.add(time);
     }
 
-    public void storeTempPoints(int tempPoints) {
+    public void storeTempPoints(int tempPoints, int tempAns) {
         this.tempPoints += tempPoints;
+        this.tempAns += tempAns;
     }
 
     public void submitTempPoints() {
         addPoints(tempPoints);
+        addAnswers(tempAns);
         clearTempPoints();
     }
 
@@ -98,7 +101,7 @@ public class Player {
 
     public String getStats() {
         String output = "";
-        output += "Player "+name+" stats:\n";
+        output += ""+name+" stats:\n";
         output += "\t"+getTotalPoints()+" points\n";
         output += "\t"+getTotalStrikes()+" strikes\n";
         output += "\t"+getTotalAnswers()+" answers\n";
