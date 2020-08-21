@@ -76,7 +76,7 @@ public class Controller_gameStage {
     private AudioClip bellEffect = new AudioClip(new File("src/familyfeud/sounds/bell.mp3").toURI().toString());
     // Media credit: https://www.youtube.com/watch?v=NtKEMWX8OqU
     private AudioClip strikeEffect = new AudioClip(new File("src/familyfeud/sounds/strike.mp3").toURI().toString());
-    // Media credit: https://www.youtube.com/watch?v=NtKEMWX8OqU
+    // Media credit: https://freesound.org/people/f4ngy/sounds/240776/
     private AudioClip cardEffect = new AudioClip(new File("src/familyfeud/sounds/card.wav").toURI().toString());
 
     private LinkedList<Round> Game = new LinkedList<Round>();
