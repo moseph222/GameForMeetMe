@@ -2,7 +2,6 @@ package familyfeud;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Controller_endScreen {
@@ -30,10 +28,6 @@ public class Controller_endScreen {
     private int gameFile = 0;
     private Team winningTeam;
     private Team losingTeam;
-
-    public void initialize(){
-
-    }
 
     public void setStageAndSetupListeners(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -75,11 +69,21 @@ public class Controller_endScreen {
         setUpComboBox(losers, losingTeam);
     }
 
+    /**
+     * Runs through a stat log of a team and
+     * populates given pane with labels detatling
+     * stat information.
+     *
+     * @param pane - pane to be populated
+     * @param text - input stats
+     */
     public void populatePane(VBox pane, String text) {
         pane.getChildren().clear();
         Scanner scan = new Scanner(text);
         Label line;
         boolean firstLine = true;
+
+        // iterates through stats and prints a label for each one
         while(scan.hasNextLine()) {
             line = new Label(scan.nextLine().trim());
 
@@ -104,20 +108,6 @@ public class Controller_endScreen {
         startStage.passPastVariables(gameFile, game.get(0).getCurrentTeam(), game.get(0).getOtherTeam());
         primaryStage.setScene(new Scene(root, 360, 640));
         primaryStage.getScene().getStylesheets().add("style.css");
-    }
-
-    //TODO deprecated
-    public void setWinnerTeam(String winnerTeam, List<String> winnerTeamPlayerList1) {
-//        this.winnerTeamStr = winnerTeam;
-//        this.winnerTeamPlayerList = winnerTeamPlayerList1;
-//        this.winnerTeam.setText(winnerTeamStr);
-//        String team = "";
-//
-//        for(int i = 0; i < winnerTeamPlayerList.size(); i++){
-//            team = team + winnerTeamPlayerList.get(i) + "  ";
-//        }
-//
-//        teamPlayers.setText(team);
     }
 
     public void showTeamStats(MouseEvent e) {

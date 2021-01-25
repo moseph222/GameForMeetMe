@@ -80,7 +80,7 @@ public class Round {
         this.chanceToSteal = chance;
     }
 
-    public boolean hasChanceToSteal() {
+    public boolean aTeamHasChanceToSteal() {
         return this.chanceToSteal;
     }
 

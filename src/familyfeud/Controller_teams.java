@@ -11,8 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -40,15 +38,6 @@ public class Controller_teams {
     private int gameFile = 0;
 
     public void initialize() throws FileNotFoundException {
-        // File with 151 questions
-//        File file = new File("E:\\Documents\\Sample_FF_Questions.txt");
-//        Scanner scan = new Scanner(file);
-//        scan.useDelimiter("   ");
-//        int num = 0;
-//        int index = 0;
-//        String next = "";
-//        String question = "";
-//        String answer[] = new String[5];
         team1playerslist = new ArrayList<Player>();
         team2playerslist = new ArrayList<Player>();
         totalPlayers = new ArrayList<Player>();
@@ -71,13 +60,16 @@ public class Controller_teams {
             comboBox.getItems().add(gameName);
         }
         comboBox.setValue("Game "+gameFile);
-        //comboBox.setMaxWidth(new Text(comboBox.getItems().get(0).toString()).getLayoutBounds().getWidth()+20);
 
         if(Main.Debugging()) {
             Team1Players.setText("Eden, Mcluvin, Moseph");
             Team2Players.setText("Emma, Benjamin, Joseph");
             submit.setDisable(false);
         }
+    }
+
+    public void setStageAndSetupListeners(Stage primaryStage){
+        this.primaryStage = primaryStage;
     }
 
     @FXML
@@ -90,9 +82,6 @@ public class Controller_teams {
         parsePlayers(Team2Players,team2playerslist);
         totalPlayers.addAll(team1playerslist);
         totalPlayers.addAll(team2playerslist);
-
-        //Team1Players.setEditable(false);
-        //Team2Players.setEditable(false);
 
         // Debugging
         if(Main.Debugging()) {
@@ -168,19 +157,17 @@ public class Controller_teams {
         Team1Players.replaceText(0,Team1Players.getLength(),team1Names.trim());
         Team2Players.replaceText(0,Team2Players.getLength(),team2Names.trim());
 
-
         // Debugging
-
-        System.out.println("\nRandomized Players");
-        System.out.println("\nTeam 1 Players\n");
-        for(int i = 0; i < team1playerslist.size(); i++)
-        {
-            System.out.println("["+team1playerslist.get(i)+"]");
-        }
-        System.out.println("\nTeam 2 Players\n");
-        for(int i = 0; i < team2playerslist.size(); i++)
-        {
-            System.out.println("["+team2playerslist.get(i)+"]");
+        if(Main.Debugging()) {
+            System.out.println("\nRandomized Players");
+            System.out.println("\nTeam 1 Players\n");
+            for (int i = 0; i < team1playerslist.size(); i++) {
+                System.out.println("[" + team1playerslist.get(i) + "]");
+            }
+            System.out.println("\nTeam 2 Players\n");
+            for (int i = 0; i < team2playerslist.size(); i++) {
+                System.out.println("[" + team2playerslist.get(i) + "]");
+            }
         }
 
         this.checkSubmitStatus();
@@ -217,10 +204,6 @@ public class Controller_teams {
         //System.out.println("setTeamNames called");
     }
 
-    public void setStageAndSetupListeners(Stage primaryStage){
-        this.primaryStage = primaryStage;
-    }
-
     public void passPastVariables(int gameFile, Team team1, Team team2){
         this.gameFile = gameFile;
         System.out.println("Gamefile: "+gameFile);
@@ -229,11 +212,6 @@ public class Controller_teams {
         Team1Players.setText(team1Players.substring(1,team1Players.length()-1));
         Team2Players.setText(team2Players.substring(1,team2Players.length()-1));
         comboBox.setValue("Game "+gameFile);
-    }
-
-    @FXML
-    public void onButtonClicked(MouseEvent e) throws IOException {
-
     }
 
     public void onKeyTyped(KeyEvent keyEvent) {

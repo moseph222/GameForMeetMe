@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -81,8 +80,8 @@ public class Controller_gameStage {
 
     private LinkedList<Round> Game = new LinkedList<Round>();
 
-    public void initialize(){
-
+    public void setStageAndSetupListeners(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 
     public void LoadQuestions(MouseEvent event){
@@ -170,7 +169,6 @@ public class Controller_gameStage {
 
         animateFlip(stack);
 
-        //int idnum = Integer.parseInt(front.getId());
         Label points = (Label) back.getRight();
 
         // If button has already been pressed, do nothing
@@ -183,17 +181,14 @@ public class Controller_gameStage {
         if (noMorePoints == true) {
             roundPointsInteger = 0;
         }
-        else if(Game.get(round-1).hasChanceToSteal() == false){
+        else if(Game.get(round-1).aTeamHasChanceToSteal() == false){
             roundPointsInteger += Integer.parseInt(points.getText());
             Game.get(round-1).getCurrentPlayer().storeTempPoints(roundPointsInteger, 1);
             Game.get(round-1).getCurrentTeam().rotatePlayers();
         }
 
-        //((BorderPane) e.getSource()).getChildren().get(0).setOpacity(100);
-        //points.get(idnum-1).setOpacity(100);
-
         // Handle stealing
-        if(Game.get(round-1).hasChanceToSteal()) {
+        if(Game.get(round-1).aTeamHasChanceToSteal()) {
             roundPointsInteger += Integer.parseInt(points.getText());
             Game.get(round-1).getCurrentTeam().addStolenPoints(roundPointsInteger);
             Game.get(round-1).getOtherTeam().clearTeamTempPoints();
@@ -293,7 +288,6 @@ public class Controller_gameStage {
                     BorderPane pane = (BorderPane) e.getSource();
                     pane.getStyleClass().add("answerHover");
                     hoverEffect.play();
-                    //pane.setPrefSize(pane.getWidth()+5,pane.getHeight()+5);
                 }
             });
             front.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -302,7 +296,6 @@ public class Controller_gameStage {
                     primaryStage.getScene().setCursor(Cursor.DEFAULT);
                     BorderPane pane = (BorderPane) e.getSource();
                     pane.getStyleClass().remove("answerHover");
-                    //pane.setPrefSize(pane.getWidth()-5,pane.getHeight()-5);
                 }
             });
 
@@ -380,7 +373,7 @@ public class Controller_gameStage {
                 Game.get(round-1).setCurrentTeam(Game.get(round-2).getCurrentTeam());
                 // If the team previously playing was stealing, they should go first
                 // Otherwise, the teams should switch for the new round
-                if(Game.get(round-2).hasChanceToSteal() == false)
+                if(Game.get(round-2).aTeamHasChanceToSteal() == false)
                     switchTeams();
                 refreshLabels();
             }
@@ -395,7 +388,7 @@ public class Controller_gameStage {
 
     public void keepPoints() {
         // Upon failure to steal, and host presses "keep points" button
-        if(Game.get(round-1).hasChanceToSteal()) {
+        if(Game.get(round-1).aTeamHasChanceToSteal()) {
             // The current player is the team set to steal, so we must switch
             switchTeams();
             Game.get(round-1).setChanceToSteal(false);
@@ -468,7 +461,7 @@ public class Controller_gameStage {
 
         for(int i = 0; i < 3; i++) {
             Circle indicator1 = new Circle(0,0,6);
-            if((strikes > i && Game.get(round-1).getCurrentTeam().equals(team1) && !(Game.get(round-1).hasChanceToSteal())) || (Game.get(round-1).hasChanceToSteal() && Game.get(round-1).getCurrentTeam().equals(team2)))
+            if((strikes > i && Game.get(round-1).getCurrentTeam().equals(team1) && !(Game.get(round-1).aTeamHasChanceToSteal())) || (Game.get(round-1).aTeamHasChanceToSteal() && Game.get(round-1).getCurrentTeam().equals(team2)))
                 indicator1.setFill(Color.RED);
             else
                 indicator1.setFill(Color.GREEN);
@@ -476,17 +469,13 @@ public class Controller_gameStage {
             team1StrikeIndicators.getChildren().add(indicator1);
 
             Circle indicator2 = new Circle(0,0,6);
-            if((strikes > i && Game.get(round-1).getCurrentTeam().equals(team2) && !(Game.get(round-1).hasChanceToSteal())) || (Game.get(round-1).hasChanceToSteal() && Game.get(round-1).getCurrentTeam().equals(team1)))
+            if((strikes > i && Game.get(round-1).getCurrentTeam().equals(team2) && !(Game.get(round-1).aTeamHasChanceToSteal())) || (Game.get(round-1).aTeamHasChanceToSteal() && Game.get(round-1).getCurrentTeam().equals(team1)))
                 indicator2.setFill(Color.RED);
             else
                 indicator2.setFill(Color.GREEN);
             GridPane.setColumnIndex(indicator2,i);
             team2StrikeIndicators.getChildren().add(indicator2);
         }
-    }
-
-    public void setStageAndSetupListeners(Stage primaryStage) {
-        this.primaryStage = primaryStage;
     }
 
     /**
@@ -528,7 +517,7 @@ public class Controller_gameStage {
     public void setCurrentTeamAndPlayerLabels() {
         currentPlayer.setText(Game.get(round-1).getCurrentPlayer().toString());
         currentTeam.setText(Game.get(round-1).getCurrentTeam().toString());
-        if(Game.get(round-1).hasChanceToSteal())
+        if(Game.get(round-1).aTeamHasChanceToSteal())
             currentPlayer.setText("STEALING");
     }
 
@@ -540,13 +529,13 @@ public class Controller_gameStage {
         }
         else {
             if (Game.get(round-1).getCurrentTeam().equals(team1)) {
-                if(Game.get(round-1).hasChanceToSteal())
+                if(Game.get(round-1).aTeamHasChanceToSteal())
                     startTimer(60,Team1Timer);
                 else
                     startTimer(20,Team1Timer);
             }
             else if (Game.get(round-1).getCurrentTeam().equals(team2)) {
-                if(Game.get(round-1).hasChanceToSteal())
+                if(Game.get(round-1).aTeamHasChanceToSteal())
                     startTimer(60,Team2Timer);
                 else
                     startTimer(20,Team2Timer);
@@ -630,7 +619,7 @@ public class Controller_gameStage {
             public void handle(WorkerStateEvent event) {
                 stack.getChildren().remove(imgLabel);
                 strikeButton.setDisable(false);
-                if(Game.get(round-1).hasChanceToSteal())
+                if(Game.get(round-1).aTeamHasChanceToSteal())
                     keepPoints();
                 else if(strikes == 3)
                     switchTeams();
@@ -647,13 +636,6 @@ public class Controller_gameStage {
         Controller_endScreen endgame = (Controller_endScreen)loader.getController();
         endgame.setStageAndSetupListeners(primaryStage);
         endgame.passGame(Game,gameFile);
-//            int t1 = Integer.parseInt(team1Points.getText());
-//            int t2 = Integer.parseInt(team2Points.getText());
-//            if(t1 > t2){
-//                endgame.setWinnerTeam(team1title, team1playerslist);
-//            } else {
-//                endgame.setWinnerTeam(team2title, team2playerslist);
-//            }
         primaryStage.setScene(new Scene(root, 720, 640));
         primaryStage.getScene().getStylesheets().add("style.css");
     }
@@ -725,167 +707,5 @@ public class Controller_gameStage {
             }
         });
         new Thread(sleeper).start();
-    }
-
-    //TODO deprecated method
-    /**
-     * Method to return the team digit of whom is currently playing
-     * (either team 1 or team 2)
-     *
-     * @return number of current team
-     * @author Benjamin
-     */
-    public int getCurrentTeamNum() {
-//        if (setToSteal)
-//            return thieves;
-//        else
-//            return gamers;
-        return 0;
-    }
-
-    //TODO deprecated method
-    /**
-     * Method to return the name of the current player.
-     * If team 1 is playing, pulls from team 1's player list.
-     * Else, pulls from team 2's.
-     * Before a player name is returned, the respective
-     * player list is rotated by 1.
-     *
-     * @return name of current player
-     * @author Benjamin
-     */
-    public String getCurrentPlayer() {
-//        if (getCurrentTeamNum() == 1) {
-//            Collections.rotate(team1playerslist, 1);
-//            return team1playerslist.get(0);
-//        } else {
-//            Collections.rotate(team2playerslist, 1);
-//            return team2playerslist.get(0);
-//        }
-        return "";
-    }
-
-    //TODO deprecated method
-    public void AttemptHandler(MouseEvent e) {
-//
-//        Label currentLabel = (Label) e.getSource();
-//        String buttonId = currentLabel.getId();
-//
-//        if (buttonId.compareTo("team1attemptButton1") == 0) {
-//            Image newimg = null;
-//            if (team1NumAttempts[0] == 0) {
-//                newimg = new Image(getClass().getResourceAsStream("images/RedButton.png"));
-//                team1NumAttempts[0] = 1;
-//            } else if (team1NumAttempts[0] == 1) {
-//                newimg = new Image(getClass().getResourceAsStream("images/GreenButton.png"));
-//                team1NumAttempts[0] = 0;
-//            }
-////            team1Attempt1.setImage(newimg);
-////            team1Attempt1.setFitHeight(10);
-////            team1Attempt1.setFitWidth(10);
-//        } else if (buttonId.compareTo("team1attemptButton2") == 0) {
-//            Image newimg = null;
-//            if (team1NumAttempts[1] == 0) {
-//                newimg = new Image(getClass().getResourceAsStream("images/RedButton.png"));
-//                team1NumAttempts[1] = 1;
-//            } else {
-//                newimg = new Image(getClass().getResourceAsStream("images/GreenButton.png"));
-//                team1NumAttempts[1] = 0;
-//            }
-////            team1Attempt2.setImage(newimg);
-////            team1Attempt2.setFitHeight(10);
-////            team1Attempt2.setFitWidth(10);
-//        } else if (buttonId.compareTo("team1attemptButton3") == 0) {
-//            Image newimg = null;
-//            if (team1NumAttempts[2] == 0) {
-//                newimg = new Image(getClass().getResourceAsStream("images/RedButton.png"));
-//                team1NumAttempts[2] = 1;
-//            } else {
-//                newimg = new Image(getClass().getResourceAsStream("images/GreenButton.png"));
-//                team1NumAttempts[2] = 0;
-//            }
-////            team1Attempt3.setImage(newimg);
-////            team1Attempt3.setFitHeight(10);
-////            team1Attempt3.setFitWidth(10);
-//        } else if (buttonId.compareTo("team2attemptButton1") == 0) {
-//            Image newimg = null;
-//            if (team2NumAttempts[0] == 0) {
-//                newimg = new Image(getClass().getResourceAsStream("images/RedButton.png"));
-//                team2NumAttempts[0] = 1;
-//            } else {
-//                newimg = new Image(getClass().getResourceAsStream("images/GreenButton.png"));
-//                team2NumAttempts[0] = 0;
-//            }
-////            team2Attempt1.setImage(newimg);
-////            team2Attempt1.setFitHeight(10);
-////            team2Attempt1.setFitWidth(10);
-//        } else if (buttonId.compareTo("team2attemptButton2") == 0) {
-//            Image newimg = null;
-//            if (team2NumAttempts[1] == 0) {
-//                newimg = new Image(getClass().getResourceAsStream("images/RedButton.png"));
-//                team2NumAttempts[1] = 1;
-//            } else {
-//                newimg = new Image(getClass().getResourceAsStream("images/GreenButton.png"));
-//                team2NumAttempts[1] = 0;
-//            }
-////            team2Attempt2.setImage(newimg);
-////            team2Attempt2.setFitHeight(10);
-////            team2Attempt2.setFitWidth(10);
-//        } else if (buttonId.compareTo("team2attemptButton3") == 0) {
-//            Image newimg = null;
-//            if (team2NumAttempts[2] == 0) {
-//                newimg = new Image(getClass().getResourceAsStream("images/RedButton.png"));
-//                team2NumAttempts[2] = 1;
-//            } else {
-//                newimg = new Image(getClass().getResourceAsStream("images/GreenButton.png"));
-//                team2NumAttempts[2] = 0;
-//            }
-////            team2Attempt3.setImage(newimg);
-////            team2Attempt3.setFitHeight(10);
-////            team2Attempt3.setFitWidth(10);
-//        }
-//
-//        // If a team has 3 strikes, switch teams
-//        if(team1NumAttempts[0] == 1 && team1NumAttempts[1] == 1 && team1NumAttempts[2] == 1) {
-//            switchTeams();
-//        }
-//        else if(team2NumAttempts[0] == 1 && team2NumAttempts[1] == 1 && team2NumAttempts[2] == 1) {
-//            switchTeams();
-//        }
-    }
-
-    //TODO deprecated method
-    public void zeroOpacityAnsFromCurQuestion(int round) {
-        for (int i = 0; i < Game.get(round - 1).getAnswers().size(); i++) {
-//            allButtons.get(i).setOpacity(0);
-//            pointsList.get(i).setOpacity(0);
-        }
-    }
-
-    //TODO deprecated method
-    public void resetAttempts() {
-//        team1NumAttempts = new int[3];
-//        team2NumAttempts = new int[3];
-
-        Image newimg = new Image(getClass().getResourceAsStream("images/GreenButton.png"));
-
-//        team1Attempt1.setImage(newimg);
-//        team1Attempt1.setFitHeight(10);
-//        team1Attempt1.setFitWidth(10);
-//        team1Attempt2.setImage(newimg);
-//        team1Attempt2.setFitHeight(10);
-//        team1Attempt2.setFitWidth(10);
-//        team1Attempt2.setImage(newimg);
-//        team1Attempt2.setFitHeight(10);
-//        team1Attempt2.setFitWidth(10);
-//        team2Attempt1.setImage(newimg);
-//        team2Attempt1.setFitHeight(10);
-//        team2Attempt1.setFitWidth(10);
-//        team2Attempt2.setImage(newimg);
-//        team2Attempt2.setFitHeight(10);
-//        team2Attempt2.setFitWidth(10);
-//        team2Attempt3.setImage(newimg);
-//        team2Attempt3.setFitHeight(10);
-//        team2Attempt3.setFitWidth(10);
     }
 }

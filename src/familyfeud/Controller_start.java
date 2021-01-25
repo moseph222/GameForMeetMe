@@ -32,20 +32,16 @@ public class Controller_start {
         }
     }
 
+    public void setStageAndSetupListeners(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
+
     @FXML
     public void onButtonClicked(MouseEvent e) throws IOException {
-
-        // boolean disableButton1 = team1_name.isEmpty() || team1_name.trim().isEmpty();
-        // boolean disableButton2 = team2_name.isEmpty() || team2_name.trim().isEmpty();
-
         if(!Team1.getText().isEmpty() && !Team2.getText().isEmpty()){
             System.out.println("The following button was a " + e.getSource());
             handleEvent();
         }
-    }
-
-    public void setStageAndSetupListeners(Stage primaryStage){
-        this.primaryStage = primaryStage;
     }
 
     public void onKeyPress (KeyEvent keyEvent) throws IOException {
